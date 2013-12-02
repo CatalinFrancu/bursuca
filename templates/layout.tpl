@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-    <title>{$pageTitle|ucfirst} | Mule</title>
+    <title>{$pageTitle|ucfirst} | Bursuca</title>
     <meta charset="utf-8">
     {foreach from=$cssFiles item=cssFile}
       <link type="text/css" href="{$wwwRoot}css/{$cssFile}" rel="stylesheet"/>
@@ -12,12 +12,13 @@
   </head>
 
   <body>
-    <div class="title">Mule</div>
+    <div class="title">Bursuca</div>
 
     <div class="menu">
       <ul>
         <li><a href="{$wwwRoot}">{"home"|_}</a></li>
         {if $user}
+          <li><a href="{$wwwRoot}agents">agenți</a></li>
           <li class="right"><a href="{$wwwRoot}auth/logout">{"logout"|_}</a></li>
           <li class="right"><a href="{$wwwRoot}auth/account">{"my account"|_}</a></li>
           <li class="userName right">{$user->getDisplayName()}</li>
