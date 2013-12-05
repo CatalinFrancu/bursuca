@@ -1,12 +1,12 @@
-<h3>agenții mei</h3>
+{if $agents}
+  <h3>agenții mei</h3>
+{/if}
 
-<table>
-  {foreach from=$agents item=a}
-    <tr>
-      <td>{$a->name}</td>
-    </tr>
-  {/foreach}
-</table>
+{foreach from=$agents item=a}
+  <div>
+    v{$a->version}. {$a->name} <a class="sourceCodeLink" href="agentSourceCode?id={$a->id}">cod-sursă</a>
+  </div>
+{/foreach}
 
 <h3>adaugă un agent</h3>
 <form method="post" enctype="multipart/form-data">

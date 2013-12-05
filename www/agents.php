@@ -22,18 +22,17 @@ if ($submitButton) {
       throw new Exception('Sunt permise numai fișiere .c sau .cpp.');
     }
 
-    $sourceCode = file_get_contents($rec['tmp_name']);
-    $language = ($extension == 'c') ? 'c' : 'c++';
-    Agent::validate($sourceCode, $language);
-
     $agent = Model::factory('Agent')->create();
-    $agent->language = $language;
-    $agent->name = $name;
     $agent->userId = $user->id;
     $agent->version = 1 + Agent::getMaxVersion($user->id);
-    $compileError = $agent->saveFileAndCompile($sourceCode);
-    $agent->save();
+    $agent->name = $name;
+    $agent->language = ($extension == 'c') ? 'c' : 'c++';
 
+    // These throw exceptions on errors
+    $agent->validate();
+    $agent->setSourceCode(file_get_contents($rec['tmp_name']));
+
+    $agent->save();
     FlashMessage::add('Am adăugat strategia.', 'info');
     Util::redirect('agents');
   } catch (Exception $e) {
@@ -41,7 +40,8 @@ if ($submitButton) {
   }
 }
 
-SmartyWrap::assign('agents', Agent::get_all_by_userId($user->id));
+$agents = Model::factory('Agent')->where('userId', $user->id)->order_by_desc('version')->find_many();
+SmartyWrap::assign('agents', $agents);
 SmartyWrap::assign('pageTitle', 'programele mele');
 SmartyWrap::display('agents.tpl');
 

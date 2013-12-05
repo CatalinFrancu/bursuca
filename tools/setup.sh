@@ -10,4 +10,5 @@ then
 fi
 
 # Make some directories world-writable
+chmod 777 sources
 chmod 777 templates_c

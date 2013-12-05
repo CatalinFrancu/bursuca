@@ -37,7 +37,10 @@
     </div>
 
     <footer>
-      <div id="license"></div>
+      <div id="license">
+        Bursuca este <a href="https://github.com/CatalinFrancu/bursuca">disponibil</a> sub
+        licența <a href="http://www.gnu.org/licenses/agpl.html">GNU Affero General Public License</a>.
+      </div>
     </footer>
   </body>
 

@@ -1,4 +1,5 @@
 body {
+  background: #fdf6e3; /* To match with solarized */
   font-family: arial;
   margin: 0px auto;
   width: 1024px;
@@ -16,6 +17,10 @@ a {
   color: #000;
 }
 
+a:hover {
+  color: #800;
+}
+
 div.title {
   background: #444;
   color: white;
@@ -25,6 +30,7 @@ div.title {
 }
 
 div.menu {
+  background: #ddc6b3;
   border: 1px solid #444;
   margin-bottom: 10px;
   padding: 1px 10px;
@@ -46,7 +52,6 @@ div.menu li.right {
 }
 
 div.menu a {
-  color: black;
   font-size: 90%;
 }
 
@@ -126,4 +131,9 @@ div.errorType {
   background: #fcc url("../img/silk/exclamation.png") 8px 12px no-repeat;
   border: 1px solid red;
   color: red;
+}
+
+/** Agents page **/
+a.sourceCodeLink {
+  padding-left: 20px;
 }
