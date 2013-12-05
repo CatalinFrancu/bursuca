@@ -11,8 +11,8 @@ class SmartyWrap {
     self::$theSmarty->compile_dir = Util::$rootPath . '/templates_c';
     self::assign('wwwRoot', Util::$wwwRoot);
     self::assign('user', Session::getUser());
-    self::addCss('jqueryui', 'main');
-    self::addJs('jquery', 'jqueryui', 'main');
+    self::addCss('main');
+    self::addJs('main', 'jquery');
   }
 
   static function assign($name, $value) {
@@ -39,7 +39,8 @@ class SmartyWrap {
       switch($id) {
         case 'jqueryui':           self::$cssFiles[1] = 'lightness-1.9.2/jquery-ui-1.9.2.custom.min.css'; break;
         case 'rainbow':            self::$cssFiles[2] = 'rainbow/solarized-light.css'; break;
-        case 'main':               self::$cssFiles[3] = 'main.css?v=1'; break;
+        case 'select2':            self::$cssFiles[3] = 'select2/select2.css'; break;
+        case 'main':               self::$cssFiles[4] = 'main.css?v=1'; break;
         default:
           FlashMessage::add("Cannot load CSS file {$id}");
           Util::redirect(Util::$wwwRoot);
@@ -51,10 +52,14 @@ class SmartyWrap {
     // Note the priorities. This allows files to be added in any order, regardless of dependencies
     foreach (func_get_args() as $id) {
       switch($id) {
-        case 'jquery':           self::$jsFiles[1] = 'jquery-1.8.3.min.js'; break; 
+        case 'jquery':           self::$jsFiles[1] = 'jquery-1.10.2.min.js'; break; 
         case 'jqueryui':         self::$jsFiles[2] = 'jquery-ui-1.9.2.custom.min.js'; break;
         case 'rainbow':          self::$jsFiles[3] = 'rainbow-custom.min.js'; break;
-        case 'main':             self::$jsFiles[4] = 'main.js?v=1'; break;
+        case 'select2':
+          self::$jsFiles[4] = 'select2.min.js';
+          self::$jsFiles[5] = 'select2_locale_ro.js';
+          break;
+        case 'main':             self::$jsFiles[6] = 'main.js?v=1'; break;
         default:
           FlashMessage::add("Cannot load JS script {$id}");
           Util::redirect(Util::$wwRoot);

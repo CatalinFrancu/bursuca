@@ -137,3 +137,10 @@ div.errorType {
 a.sourceCodeLink {
   padding-left: 20px;
 }
+
+/** Game filter **/
+div#gameFilters {
+  border: 1px dotted #999;
+  margin-left: 20px;
+  padding: 5px;
+}

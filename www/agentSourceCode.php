@@ -14,6 +14,7 @@ if ($agent->userId != $user->id) {
 }
 
 SmartyWrap::assign('agent', $agent);
+SmartyWrap::assign('sourceCode', $agent->getSourceCode());
 SmartyWrap::assign('pageTitle', "cod sursă v{$agent->version}");
 SmartyWrap::addCss('rainbow');
 SmartyWrap::addJs('rainbow');
