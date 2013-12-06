@@ -6,6 +6,7 @@ define('START_CASH', 10);
 define('WIN_CASH', 100);
 define('MAX_DIE', 6);
 define('PASS_MOVE', 'P 0 0');
+define('MOVE_TIME_MILLIS', 1000);
 
 // Types of (in)valid moves
 define('MOVE_VALID', 0);
@@ -32,10 +33,6 @@ $players = array_values(Model::factory('Player')->where('gameId', $game->id)->or
 $engines = array();
 foreach ($players as $i => $p) {
   $engines[] = new Engine($p);
-}
-
-foreach ($engines as $e) {
-  printf("%d. %s v%d (%s)\n", $e->player->position, $e->user->username, $e->agent->version, $e->agent->name);
 }
 
 // send the initial data to each engine
@@ -70,11 +67,11 @@ do {
 
   // read the current player's move
   if ($e->jp->alive) {
-    $resp = $e->jp->readLine();
+    $resp = $e->jp->readLine(MOVE_TIME_MILLIS);
     if (!$e->jp->alive || ($e->validMove($resp, $d1, $d2, $stockPrices) != MOVE_VALID)) {
       $resp = PASS_MOVE;
-      $e->jp->kill();
-      $numActivePrograms--;
+      $e->jp->kill(Player::REASON_BAD_MOVE);
+      $e->player->rank = $numActivePrograms--;
     }
   } else {
     $resp = PASS_MOVE;
@@ -93,8 +90,34 @@ do {
   printGameState($engines, $stockPrices);
 } while (($e->cash < WIN_CASH) && ($numActivePrograms > 1));
 
+// Process cleanup
 foreach ($engines as $e) {
-  $e->jp->kill();
+  $e->jp->kill(Player::REASON_GAME_OVER);
+  $e->player->exitCode = $e->jp->exitCode;
+  $e->player->killReason = $e->jp->killReason;
+}
+
+// Sort the engines by rank and cash and assign ranks to those that lived to the end of the game
+usort($engines, 'cmp');
+$rank = 1;
+foreach ($engines as $e) {
+  if (!$e->player->rank) {
+    $e->player->rank = $rank++;
+  }
+}
+
+// Save the game and players
+$game->status = Game::STATUS_FINISHED;
+$game->save();
+foreach ($engines as $e) {
+  $e->player->save();
+}
+
+print "\nFinal rankings:\n";
+foreach ($engines as $e) {
+  printf("%d. %s v%d (%s) exitCode %d killReason %d\n",
+         $e->player->rank, $e->user->username, $e->agent->version, $e->agent->name,
+         $e->player->exitCode, $e->player->killReason);
 }
 
 /**************************************************************************/
@@ -158,6 +181,16 @@ class Engine {
         $stockPrices[$company] += $arg;
         break;
     }
+  }
+}
+
+function cmp($e1, $e2) {
+  if ($e1->player->rank < $e2->player->rank) {
+    return -1;
+  } else if ($e1->player->rank > $e2->player->rank) {
+    return 1;
+  } else {
+    return $e2->cash - $e1->cash;
   }
 }
 

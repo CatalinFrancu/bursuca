@@ -12,6 +12,7 @@ class JailedProcess {
   // Process-related variables
   public $alive;               // is the process still ok
   public $exitCode;            // as returned by the child process
+  public $killReason;          // as defined in Player.php
   private $debugName;          // something to prepend to debug messages
   private $workingDir;         // temporary working dir
   private $binaryFullPath;     // full path to the binary copied within the working dir
@@ -25,6 +26,7 @@ class JailedProcess {
    **/ 
   function __construct($binaryName, $dataName, $debugName) {
     $this->debugName = $debugName;
+    $this->killReason = Player::REASON_UNKNOWN;
 
     // Create a directory
     $this->workingDir = OS::tempdir('/tmp/', 'jp_');
@@ -74,19 +76,28 @@ class JailedProcess {
       $status = proc_get_status($this->process);
       if (!$status['running']) {
         $this->exitCode = $status['exitcode'];
-        $this->alive = false;
+        $this->kill(Player::REASON_EXIT);
         print "Program {$this->debugName} ended with exit code {$this->exitCode}\n";
       }
     }
   }
 
-  function kill() {
+  function kill($reason) {
     $this->alive = false;
+    if ($this->killReason == Player::REASON_UNKNOWN) {
+      $this->killReason = $reason;
+    }
   }
 
   /* Returns a line of text or null if no input is available */
-  function readLine() {
+  function readLine($moveTimeMillis) {
     if (!$this->alive) {
+      return null;
+    }
+
+    $read = array($this->pipes[1]);
+    if (!stream_select($read, $ignored, $ignored, $moveTimeMillis / 1000, ($moveTimeMillis % 1000) * 1000)) {
+      $this->kill(Player::REASON_TLE);
       return null;
     }
 
