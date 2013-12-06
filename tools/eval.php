@@ -49,6 +49,7 @@ foreach ($engines as $i => $e) {
 }
 
 // main game loop
+$moves = array();
 $numActivePrograms = count($players);
 $turn = 0;
 $curPlayer = count($players) - 1;
@@ -76,6 +77,7 @@ do {
   } else {
     $resp = PASS_MOVE;
   }
+  $moves[] = $resp;
 
   // relay the current player's move to other players
   foreach ($engines as $j => $other) {
@@ -111,6 +113,18 @@ $game->status = Game::STATUS_FINISHED;
 $game->save();
 foreach ($engines as $e) {
   $e->player->save();
+}
+
+// Save the moves
+foreach ($moves as $i => $s) {
+  list($action, $arg, $company) = explode(' ', $s);
+  $move = Model::factory('Move')->create();
+  $move->gameId = $game->id;
+  $move->number = $i + 1;
+  $move->action = $action;
+  $move->arg = $arg;
+  $move->company = $company;
+  $move->save();
 }
 
 print "\nFinal rankings:\n";
