@@ -170,3 +170,17 @@ a.sourceCodeLink {
   border: 1px solid #999;
   padding: 2px;
 }
+
+#gameBoard {
+  width: 100%;
+}
+
+#gameBoard .shrink {
+  width: 1%;
+  white-space: nowrap;
+}
+
+#gameBoard .agentName {
+  white-space: nowrap;
+  width: 20px;
+}

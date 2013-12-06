@@ -41,7 +41,7 @@
   </tr>
   {foreach from=$gameRecords item=rec}
     <tr>
-      <td>{$rec.game->id}</td>
+      <td><a href="game?id={$rec.game->id}">{$rec.game->id}</a></td>
       <td>
         {foreach from=$rec.users key=i item=u}
           {$u->username} v{$rec.agents[$i]->version} ({$rec.agents[$i]->name})<br/>

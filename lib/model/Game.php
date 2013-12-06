@@ -25,6 +25,10 @@ class Game extends BaseObject {
     return $g;
   }
 
+  public function isFinished() {
+    return $this->status == self::STATUS_FINISHED;
+  }
+
   public function getStatusName() {
     return self::$STATUS_NAMES[$this->status];
   }
