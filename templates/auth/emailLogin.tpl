@@ -5,7 +5,7 @@
   <input type="text" name="email" value="{$email}" size="50" autofocus="autofocus"/>
   <input type=submit id="login" name="submitButton" value="{'login'|_}"/>  
 </form>
-<br/>
+<br>
 
 {'You can use this form to request a one-time token to login via email. This may be necessary in two cases:'|_}
 

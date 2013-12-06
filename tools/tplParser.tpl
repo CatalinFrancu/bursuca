@@ -4,10 +4,10 @@
 {"Two strings"|_} some text here {'on the same row'|_}
 
 <input type=submit id="login" name="submitButton" value="{'login'|_}"/>  
-<br/>
+<br>
 
-{"This string has an 'apostrophe' and a back\slash in the middle"|_}<br/><br/>
-{'Here is one with "double quotes"'|_}<br/><br/>
+{"This string has an 'apostrophe' and a back\slash in the middle"|_}<br><br>
+{'Here is one with "double quotes"'|_}<br><br>
 
 <img src="{$wwwRoot}img/openid/openid.png" alt="{'OpenID logo'|_}"/>
 

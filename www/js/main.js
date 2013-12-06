@@ -43,6 +43,27 @@ function gameFilterInit() {
   });
 }
 
+function newGameInit() {
+  $('input[name="newGamePlayers[]"]').select2({
+    ajax: {
+      data: function(term, page) { return { term: term }; },
+      dataType: 'json',
+      results: function(data, page) { return data; }, 
+      url: wwwRoot + 'ajax/getAgents.php',
+    },
+    allowClear: true,
+    initSelection: initSelectionAgent,
+    minimumInputLength: 1,
+    placeholder: 'adaugă un agent...',
+    width: '300px',
+  });
+
+  $('#newGameToggle').click(function() {
+    $('#newGame').slideToggle();
+    return false;
+  });
+}
+
 function initSelectionUser(element, callback) {
   var id = $(element).val();
   if (id) {

@@ -5,9 +5,9 @@
   <input type="text" name="openid" value="{$openid}" size="50" autofocus="autofocus"/>
   <input type=submit id="login" name="submitButton" value="{'login'|_}"/>  
 </form>
-<br/>
+<br>
 
-{"If you have a Google or Yahoo account, you can use it as an OpenID:"|_}<br/><br/>
+{"If you have a Google or Yahoo account, you can use it as an OpenID:"|_}<br><br>
 
 <div id="openidProviders">
   <a href="{$wwwRoot}auth/login?openid=google"><img src="{$wwwRoot}img/openid/google.png" alt="{'Google account login'|_}"/></a>

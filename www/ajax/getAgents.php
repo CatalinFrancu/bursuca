@@ -17,9 +17,9 @@ foreach ($agents as $a) {
   $u = $users[$a->userId];
   $i = 0;
   while (($i < count($parts)) &&
-         ((strpos($u->username, $parts[$i]) !== false) ||
-          (strpos($a->name, $parts[$i]) !== false) ||
-          (strpos($a->version, $parts[$i]) !== false))) {
+         ((stripos($u->username, $parts[$i]) !== false) ||
+          (stripos($a->name, $parts[$i]) !== false) ||
+          (stripos($a->version, $parts[$i]) !== false))) {
     $i++;
   }
   if ($i == count($parts)) {

@@ -44,8 +44,8 @@ class BaseObject extends Model {
   }
 
   static function __die($message, $name, $arguments) {
-    print "BaseObject::__callStatic() error: $message<br/>\n";
-    print "Function name: $name<br/>\nArguments: ";
+    print "BaseObject::__callStatic() error: $message<br>\n";
+    print "Function name: $name<br>\nArguments: ";
     print_r($arguments);
     die();
   }

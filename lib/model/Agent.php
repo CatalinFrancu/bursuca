@@ -44,12 +44,12 @@ class Agent extends BaseObject {
     if ($returnValue) {
       @unlink($fileName);
       @unlink($binaryName);
-      throw new Exception('Eroare la compilare:<br/>' . implode('<br/>', $output));
+      throw new Exception('Eroare la compilare:<br>' . implode('<br>', $output));
     }
-    if (!rename($fileName, $this->getFullSourceName())) {
+    if (!@rename($fileName, $this->getFullSourceName())) {
       throw new Exception('Nu pot salva sursa în directorul de surse.');
     }
-    if (!rename($binaryName, $this->getFullBinaryName())) {
+    if (!@rename($binaryName, $this->getFullBinaryName())) {
       throw new Exception('Nu pot salva binarul în directorul de binare.');
     }
   }

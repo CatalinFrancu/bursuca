@@ -17,9 +17,9 @@
     <div class="menu">
       <ul>
         <li><a href="{$wwwRoot}">{"home"|_}</a></li>
+        <li><a href="{$wwwRoot}games">partide</a></li>
         {if $user}
           <li><a href="{$wwwRoot}agents">agenți</a></li>
-          <li><a href="{$wwwRoot}games">partide</a></li>
           <li class="right"><a href="{$wwwRoot}auth/logout">{"logout"|_}</a></li>
           <li class="right"><a href="{$wwwRoot}auth/account">{"my account"|_}</a></li>
           <li class="userName right">{$user->getDisplayName()}</li>
