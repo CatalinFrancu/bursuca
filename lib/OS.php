@@ -23,6 +23,14 @@ class OS {
     } while (file_exists($fileName));
     return $fileName;
   }
+
+  /* Creates a temporary, unique, non-existant directory. */
+  static function tempdir($dir, $prefix = '') {
+    $dirName = tempnam('/tmp', 'referee_');
+    unlink($dirName);     // tempnam actually creates a file, but we want a directory
+    mkdir($dirName);
+    return $dirName;
+  }
 }
 
 ?>

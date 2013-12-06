@@ -17,6 +17,10 @@ class Agent extends BaseObject {
     return sprintf("%s/%s/%04s_%04s", Util::$rootPath, self::SOURCES_DIR, $this->userId, $this->version);
   }
 
+  function getFullDataName() {
+    return sprintf("%s.dat", $this->getFullBinaryName());
+  }
+
   function getFullSourceName() {
     return sprintf("%s.%s", $this->getFullBinaryName(), self::$EXTENSION[$this->language]);
   }
