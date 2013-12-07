@@ -171,16 +171,91 @@ a.sourceCodeLink {
   padding: 2px;
 }
 
+/** Game replay **/
 #gameBoard {
   width: 100%;
 }
 
-#gameBoard .shrink {
-  width: 1%;
+#gameBoard .center {
+  text-align: center;
+}
+
+#gameBoard .expand {
+  width: 50%;
+}
+
+#gameBoard th {
+  background: #ddc6b3;
+  font-weight: normal;
+  text-align: left;
+}
+
+.controlBar {
+  background: #ddc6b3;
+}
+
+#gameBoard td, #gameBoard th {
+  border: 1px solid #999;
+  padding: 2px;
   white-space: nowrap;
 }
 
-#gameBoard .agentName {
-  white-space: nowrap;
-  width: 20px;
+.dollars:before {
+  content: "$";
+}
+
+.controlLink {
+  margin-right: 20px;
+  padding-left: 20px;
+}
+
+#controlFirst {
+  background: url("../img/silk/control_start.png") no-repeat;
+}
+
+#controlPrev {
+  background: url("../img/silk/control_rewind.png") no-repeat;
+}
+
+#controlNext {
+  background: url("../img/silk/control_fastforward.png") no-repeat;
+}
+
+#controlLast {
+  background: url("../img/silk/control_end.png") no-repeat;
+}
+
+#moveInfo {
+  margin-top: 10px;
+}
+
+.die {
+  float: left;
+  height: 60px;
+  margin-right: 20px;
+  width: 60px;
+}
+
+.die1 {
+  background: url("../img/dice/1.png") no-repeat;
+}
+
+.die2 {
+  background: url("../img/dice/2.png") no-repeat;
+}
+
+.die3 {
+  background: url("../img/dice/3.png") no-repeat;
+}
+
+.die4 {
+  background: url("../img/dice/4.png") no-repeat;
+}
+
+.die5 {
+  background: url("../img/dice/5.png") no-repeat;
+}
+
+.die6 {
+  background: url("../img/dice/6.png") no-repeat;
 }

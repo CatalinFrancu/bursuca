@@ -129,9 +129,9 @@ foreach ($moves as $i => $s) {
 
 print "\nFinal rankings:\n";
 foreach ($engines as $e) {
-  printf("%d. %s v%d (%s) exitCode %d killReason %d\n",
+  printf("%d. %s v%d (%s) exit code %d kill reason [%s]\n",
          $e->player->rank, $e->user->username, $e->agent->version, $e->agent->name,
-         $e->player->exitCode, $e->player->killReason);
+         $e->player->exitCode, $e->player->getKillReason());
 }
 
 /**************************************************************************/

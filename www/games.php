@@ -39,7 +39,7 @@ if ($newGamePlayers) {
       $player->save();
     }
 
-    FlashMessage::add('Partida a fost creată. Ea va fi evaluată în curând', 'info');
+    FlashMessage::add('Partida a fost creată. Ea va fi evaluată în curând.', 'info');
     Util::redirect('games');
   } catch (Exception $e) {
     FlashMessage::add($e->getMessage());

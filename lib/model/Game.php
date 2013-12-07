@@ -13,7 +13,7 @@ class Game extends BaseObject {
   const MAX_INITIAL_PRICE = 6;
 
   // Idiorm doesn't allow constructors
-  public static function create() {
+  static function create() {
     $g = Model::factory('Game')->create();
     $g->status = self::STATUS_NEW;
     $g->price1 = rand(self::MIN_INITIAL_PRICE, self::MAX_INITIAL_PRICE);
@@ -25,12 +25,16 @@ class Game extends BaseObject {
     return $g;
   }
 
-  public function isFinished() {
+  function isFinished() {
     return $this->status == self::STATUS_FINISHED;
   }
 
-  public function getStatusName() {
+  function getStatusName() {
     return self::$STATUS_NAMES[$this->status];
+  }
+
+  function getStartingPrices() {
+    return array($this->price1, $this->price2, $this->price3, $this->price4, $this->price5, $this->price6);
   }
 }
 

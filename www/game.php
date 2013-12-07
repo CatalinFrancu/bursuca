@@ -25,9 +25,13 @@ foreach ($players as $p) {
   $playerRecords[] = $rec;
 }
 
+$moves = Model::factory('Move')->where('gameId', $game->id)->order_by_asc('number')->find_many();
+
 SmartyWrap::assign('game', $game);
 SmartyWrap::assign('playerRecords', $playerRecords);
+SmartyWrap::assign('moves', $moves);
 SmartyWrap::assign('pageTitle', 'partide');
+SmartyWrap::addJs('replay');
 SmartyWrap::display('game.tpl');
 
 ?>

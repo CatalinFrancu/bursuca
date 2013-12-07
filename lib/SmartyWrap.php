@@ -60,6 +60,7 @@ class SmartyWrap {
           self::$jsFiles[5] = 'select2_locale_ro.js';
           break;
         case 'main':             self::$jsFiles[6] = 'main.js?v=1'; break;
+        case 'replay':           self::$jsFiles[7] = 'replay.js?v=1'; break;
         default:
           FlashMessage::add("Cannot load JS script {$id}");
           Util::redirect(Util::$wwRoot);
