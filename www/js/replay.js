@@ -17,6 +17,7 @@ function replayAllForward() {
   while (moveNumber < numMoves) {
     replayForward();
   }
+  return false;
 }
 
 function replayForward() {

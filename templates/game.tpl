@@ -31,8 +31,8 @@
   {/foreach}
   <tr>
     <td class="controlBar" colspan="10">
-      <a id="controlFirst" class="controlLink" href="#">prima</a>
-      <a id="controlPrev" class="controlLink" href="#">înapoi</a>
+      <a id="controlFirst" class="controlLink" href="#" hidden>prima</a>
+      <a id="controlPrev" class="controlLink" href="#" hidden>înapoi</a>
       <a id="controlNext" class="controlLink" href="#">înainte</a>
       <a id="controlLast" class="controlLink" href="#">ultima</a>
     </td>

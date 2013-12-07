@@ -26,7 +26,7 @@ class OS {
 
   /* Creates a temporary, unique, non-existant directory. */
   static function tempdir($dir, $prefix = '') {
-    $dirName = tempnam('/tmp', 'referee_');
+    $dirName = tempnam($dir, $prefix);
     unlink($dirName);     // tempnam actually creates a file, but we want a directory
     mkdir($dirName);
     return $dirName;

@@ -47,7 +47,7 @@ class JailedProcess {
       1 => array("pipe", "w"),  // stdout
       2 => array("pipe", "w"),  // stderr
     );
-    $this->process = proc_open($this->binaryFullPath, $desc, $this->pipes);
+    $this->process = proc_open("chroot {$this->workingDir} ./" . self::BINARY_NAME, $desc, $this->pipes);
     if (!$this->process) {
       die("Cannot open process for {$this->programName}\n");
     }
@@ -68,6 +68,7 @@ class JailedProcess {
         posix_kill($pid, SIGKILL);
       }
     }
+    shell_exec("rm -rf {$this->workingDir}");
   }
 
   // Check on the child process. If this is the first time we notice it's dead, store the exit code.
