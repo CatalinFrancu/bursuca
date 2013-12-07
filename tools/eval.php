@@ -185,6 +185,7 @@ class Engine {
         $this->stock[$company] -= $arg;
         $this->cash += $arg * $stockPrices[$company];
         $stockPrices[$company] -= (int)($arg / 3);
+        $stockPrices[$company] = max($stockPrices[$company], 1);
         break;
 
       case 'L':

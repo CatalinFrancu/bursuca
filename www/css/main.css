@@ -190,18 +190,34 @@ a.sourceCodeLink {
   text-align: left;
 }
 
-.controlBar {
-  background: #ddc6b3;
-}
-
 #gameBoard td, #gameBoard th {
   border: 1px solid #999;
   padding: 2px;
   white-space: nowrap;
 }
 
+#gameBoard tr.activePlayer {
+  background: #eed0b3;
+}
+
+#gameBoard .cash {
+  background: url("../img/cash.png") no-repeat;
+}
+
+#gameBoard .total {
+  background: url("../img/total.png") no-repeat;
+}
+
+#gameBoard th.recent, #gameBoard td.recent{
+  font-weight: bold;
+}
+
 .dollars:before {
   content: "$";
+}
+
+.controlBar {
+  background: #ddc6b3;
 }
 
 .controlLink {
