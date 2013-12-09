@@ -1,7 +1,7 @@
 <h3>Documentație</h3>
 
-<p>Bursuca este un joc care simulează o bursă de acțiuni. Nu cunosc originea acestui joc, dar l-am învățat acum 100 de ani de la <a 
-href="http://budiu.info/mihai.html">Mihai Budiu</a>. Acest site creează un cadru în care utilizatori pot programa strategii de joc pentru Bursuca și
+<p>Bursuca este un joc care simulează o bursă de acțiuni. Nu cunosc originea acestui joc, dar l-am învățat acum 100 de ani de la <a
+href="http://budiu.info/mihai.html">Mihai Budiu</a>. Acest site creează un cadru în care utilizatorii pot programa strategii de joc pentru Bursuca și
 pot organiza turnee între aceste strategii.</p>
 
 <h4>Regulile jocului</h4>
@@ -23,7 +23,7 @@ câte $10 cash. Pe rând, fiecare jucător aruncă o pereche de zaruri. Să zice
 fiecare 3 acțiuni cumpărate, rotunjit în jos. De exemplu, dacă jucătorul cumpără 5 acțiuni la o companie, prețul acțiunilor crește cu $1. După o
 vânzare, prețul scade similar.</p>
 
-<p>Jocul se încheie când un jucător acumulează cel puțin $100 cash. Clasamentul final este dat de cash-ul jucătorilor, ordonat descrescător</p>
+<p>Jocul se încheie când un jucător acumulează cel puțin $100 cash. Clasamentul final este dat de cash-ul jucătorilor, ordonat descrescător.</p>
 
 <h4>Strategie</h4>
 
@@ -95,9 +95,8 @@ interconectarea agenților și de arbitrarea partidelor.</p>
   <li><code>P 0 0</code></li>
 </ul>
 
-<p>Comenzile B, S, L și R au semnificația de mai sus. Comanda <code>P 0 0</code> (pas) arată că adversarul a fost eliminat din joc. Agenții sunt
-eliminați din joc când fac o mutare incorectă, când depășesc timpul de gândire, când alocă prea multă memorie etc. Dacă un adversar spune „pas”, el va
-continua să spună „pas” până la sfârșitul jocului.</p>
+<p>Comenzile B, S, L și R au semnificația de mai sus. Comanda <code>P 0 0</code> (pas) arată că adversarul a fost eliminat din joc. Dacă un adversar
+spune „pas”, el va continua să spună „pas” până la sfârșitul jocului.</p>
 
 <h4>Restricții</h4>
 
@@ -109,6 +108,20 @@ continua să spună „pas” până la sfârșitul jocului.</p>
   <li>Memoria permisă este 16 MB.</li>
   <li>Mărimea fișierului sursă nu poate depăși 64 KB.</li>
 </ul>
+
+<h4>Eliminarea din joc</h4>
+
+<p>Agenții sunt eliminați din joc:</p>
+
+<ul>
+  <li>când fac o mutare incorectă (mută alte zaruri sau vor să cumpere, dar nu au destui bani etc.);</li>
+  <li>când depășesc timpul de gândire;</li>
+  <li>când alocă prea multă memorie;</li>
+  <li>când programul se termină înainte de sfârșitul jocului.</li>
+</ul>
+
+<p>În clasamentul final, primii vor fi agenții care au terminat jocul cu bine, în ordinea descrescătoare a cash-ului. Urmează agenții care au fost
+eliminați din joc, în ordine descrescătoare a mutării la care au fost eliminați.</p>
 
 <h4>Salvarea datelor între jocuri</h4>
 

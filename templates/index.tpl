@@ -1,4 +1,5 @@
 <h3>Bun venit la Bursuca</h3>
 
-Bursuca este un simulator de joc de bursă. Puteți citi <a href="manual">documentația</a>.
+<p>Bursuca este un joc care simulează o bursă de acțiuni. Acest site organizează competiții între programe de jucat Bursuca.</p>
 
+<p>Puteți citi <a href="manual">documentația</a>.</p>
