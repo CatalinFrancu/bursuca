@@ -267,3 +267,8 @@ div.errorType {
 .die6 {
   background: url("../img/dice/6.png") no-repeat;
 }
+
+#moveText {
+  font-size: 120%;
+  margin-top: 5px;
+}

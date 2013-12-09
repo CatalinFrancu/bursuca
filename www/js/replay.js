@@ -30,6 +30,7 @@ function replayForward() {
   var action = move.data('action');
   var arg = move.data('arg');
   var company = move.data('company');
+  var time = move.data('time');
 
   // set the die images and row background
   $('#die1').attr('class', 'die die' + arg);
@@ -38,7 +39,8 @@ function replayForward() {
   $('.playerRow').eq(player).addClass('activePlayer');
 
   // update the div text
-  var playerName = $('#username_' + player).text() + ' ' + $('#agentName_' + player).text();
+  $('#mUser').text($('#username_' + player).text());
+  $('#mAgent').text($('#agentName_' + player).text());
   var message;
   switch (action) {
   case 'B': message = 'cumpără ' + arg + ' acțiuni la compania ' + company; break;
@@ -47,9 +49,20 @@ function replayForward() {
   case 'L': message = 'scade prețul cu $' + arg + ' la compania ' + company; break;
   case 'P': message = 'zice pas'; break;
   }
-  $('#moveText').text(playerName + ' ' + message);
+  $('#mAction').text(message);
+  $('#mTime').text(time);
+  $('#moveText').show();
+
+  // update the player's total time
+  var totalTime = time + parseInt($('#time_' + player).text());
+  $('#time_' + player).text(totalTime);
 
   makeMove(player, action, arg, company);
+
+  // update the move counter
+  var roundNumber = 1 + ~~(moveNumber / numPlayers);
+  var roundPlayer = 1 + moveNumber % numPlayers;
+  $('#moveCounter').text('Tura ' + roundNumber + ', mutarea ' + roundPlayer);
 
   moveNumber++;
   return false;

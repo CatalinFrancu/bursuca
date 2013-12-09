@@ -7,7 +7,7 @@
     <th>loc</th>
     <th>utilizator</th>
     <th>agent</th>
-    <th>motiv / exit code</th>
+    <th>final / exit code</th>
     <th>descarcă</th>
   </tr>
   {foreach from=$ranks key=i item=rank}
@@ -16,7 +16,13 @@
       <td>{$i+1}</td>
       <td>{$rec.user->username}</td>
       <td>v{$rec.agent->version} ({$rec.agent->name})</td>
-      <td>{$rec.player->getKillReason()} ({$rec.player->exitCode|default:0})</td>
+      <td>
+        {if $game->status == Game::STATUS_FINISHED}
+          {$rec.player->getKillReason()} ({$rec.player->exitCode|default:0})
+        {else}
+          partidă în așteptare
+        {/if}
+      </td>
       <td><a href="commands?gameId={$game->id}&agentId={$rec.agent->id}">fișierul de comenzi</a></td>
     </tr>
   {/foreach}
@@ -34,8 +40,9 @@
     <th class="companyName center">C4</th>
     <th class="companyName center">C5</th>
     <th class="companyName center">C6</th>
-    <th rowspan="2" class="center">cash</th>    
-    <th rowspan="2" class="center">total</th>    
+    <th rowspan="2" class="center">cash</th>
+    <th rowspan="2" class="center">total</th>
+    <th rowspan="2">timp (ms)</th>
   </tr>
   <tr>
     {foreach from=$game->getStartingPrices() key=i item=p}
@@ -51,10 +58,11 @@
       {/section}
       <td id="cash_{$i}" class="cash dollars expand center">10</td>
       <td id="total_{$i}" class="total dollars expand center">10</td>
+      <td id="time_{$i}">0</td>
     </tr>
   {/foreach}
   <tr>
-    <td class="controlBar" colspan="10">
+    <td class="controlBar" colspan="11">
       <a id="controlFirst" class="controlLink" href="#" hidden>prima</a>
       <a id="controlPrev" class="controlLink" href="#" hidden>înapoi</a>
       <a id="controlNext" class="controlLink" href="#">înainte</a>
@@ -66,14 +74,16 @@
 <div id="moveInfo">
   <div id="die1" class="die"></div>
   <div id="die2" class="die"></div>
-  <div id="moveText">
+  <div id="moveCounter"></div>
+  <div id="moveText" hidden>
+    <span id="mUser"></span> <span id="mAgent"></span> <span id="mAction"></span> (<span id="mTime"></span> ms)
   </div>
 </div>
 <div style="clear: both;"></div>
 
 <ul id="moves" hidden>
   {foreach from=$moves item=m}
-    <li id="move_{$m->number-1}" data-action="{$m->action}" data-arg="{$m->arg}" data-company="{$m->company}"></li>
+    <li id="move_{$m->number-1}" data-action="{$m->action}" data-arg="{$m->arg}" data-company="{$m->company}" data-time="{$m->time}"></li>
   {/foreach}
 </table>
 

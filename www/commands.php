@@ -16,14 +16,13 @@ if (!$game) {
 }
 
 if (!$game->isFinished()) {
-  FlashMessage::add('Această partidă nu a fost încă jucată.');
-  Util::redirect('game?id={$game->id}');
+  Util::redirect("game?id={$game->id}");
 }
 
 $povPlayer = Player::get_by_gameId_agentId($game->id, $agentId); // point-of-view player
 if (!$povPlayer) {
   FlashMessage::add('Agentul cerut nu a participat la partidă.');
-  Util::redirect('game?id={$game->id}');
+  Util::redirect("game?id={$game->id}");
 }
 
 $players = Model::factory('Player')->where('gameId', $game->id)->order_by_asc('position')->find_many();

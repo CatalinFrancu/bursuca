@@ -33,7 +33,7 @@ if ($submitButton) {
     $agent->setSourceCode(file_get_contents($rec['tmp_name']));
 
     $agent->save();
-    FlashMessage::add('Am adăugat strategia.', 'info');
+    FlashMessage::add('Am adăugat agentul.', 'info');
     Util::redirect('agents');
   } catch (Exception $e) {
     FlashMessage::add($e->getMessage());

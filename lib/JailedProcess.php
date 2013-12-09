@@ -100,26 +100,31 @@ class JailedProcess {
     }
   }
 
-  /* Returns a line of text or null if no input is available */
+  /* Returns an array of (line of text, time spent in miliseconds). Returns false if no input is available */
   function readLine($moveTimeMillis) {
     if (!$this->alive) {
-      return null;
+      return array(false, 0);
     }
 
     $read = array($this->pipes[1]);
-    if (!stream_select($read, $ignored, $ignored, $moveTimeMillis / 1000, ($moveTimeMillis % 1000) * 1000)) {
+    $startTime = microtime(true);
+    $available = stream_select($read, $ignored, $ignored, $moveTimeMillis / 1000, ($moveTimeMillis % 1000) * 1000);
+    $elapsed = (microtime(true) - $startTime) * 1000;
+
+    if ($available) {
+      $line =  fgets($this->pipes[1]);
+      if ($line !== false) {
+        $line = trim($line);
+        printf("Read from program %s: %s (%d ms)\n", $this->debugName, $line, $elapsed);
+      } else {
+        $this->checkStatus();  // check one more time, since the program apparently ended
+      }
+    } else {
+      $line = false;
       $this->kill(Player::REASON_TLE);
-      return null;
     }
 
-    $s =  fgets($this->pipes[1]);
-    if ($s === false) {
-      // check one more time, since the program apparently ended
-      $this->checkStatus();
-      return null;
-    }
-    print "Read from program {$this->debugName}: $s";
-    return trim($s);
+    return array($line, $elapsed);
   }
 
   function writeLine($s) {

@@ -68,7 +68,7 @@ do {
 
   // read the current player's move
   if ($e->jp->alive) {
-    $resp = $e->jp->readLine(MOVE_TIME_MILLIS);
+    list($resp, $elapsed) = $e->jp->readLine(MOVE_TIME_MILLIS);
     if (!$e->jp->alive || ($e->validMove($resp, $d1, $d2, $stockPrices) != MOVE_VALID)) {
       $resp = PASS_MOVE;
       $e->jp->kill(Player::REASON_BAD_MOVE);
@@ -77,7 +77,14 @@ do {
   } else {
     $resp = PASS_MOVE;
   }
-  $moves[] = $resp;
+
+  // create a move
+  $m = Model::factory('Move')->create();
+  $m->gameId = $game->id;
+  $m->number = count($moves) + 1;
+  $m->time = $elapsed;
+  list($m->action, $m->arg, $m->company) = explode(' ', $resp);
+  $moves[] = $m;
 
   // relay the current player's move to other players
   foreach ($engines as $j => $other) {
@@ -116,15 +123,8 @@ foreach ($engines as $e) {
 }
 
 // Save the moves
-foreach ($moves as $i => $s) {
-  list($action, $arg, $company) = explode(' ', $s);
-  $move = Model::factory('Move')->create();
-  $move->gameId = $game->id;
-  $move->number = $i + 1;
-  $move->action = $action;
-  $move->arg = $arg;
-  $move->company = $company;
-  $move->save();
+foreach ($moves as $m) {
+  $m->save();
 }
 
 // Copy persistent data files
