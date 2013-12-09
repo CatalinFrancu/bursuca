@@ -8,6 +8,8 @@
     <th>utilizator</th>
     <th>agent</th>
     <th>final / exit code</th>
+    <th>timp maxim</th>
+    <th>timp mediu</th>
     <th>descarcă</th>
   </tr>
   {foreach from=$ranks key=i item=rank}
@@ -23,7 +25,11 @@
           partidă în așteptare
         {/if}
       </td>
-      <td><a href="commands?gameId={$game->id}&agentId={$rec.agent->id}">fișierul de comenzi</a></td>
+      <td>{$rec.maxMoveTime}</td>
+      <td>{$rec.avgMoveTime}</td>
+      <td>
+        <a href="commands?gameId={$game->id}&agentId={$rec.agent->id}">comenzi</a>
+      </td>
     </tr>
   {/foreach}
 </table>
