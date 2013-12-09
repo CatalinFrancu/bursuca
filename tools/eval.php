@@ -127,6 +127,11 @@ foreach ($moves as $i => $s) {
   $move->save();
 }
 
+// Copy persistent data files
+foreach ($engines as $e) {
+  $e->jp->saveDataFile($e->agent->getFullDataName());
+}
+
 print "\nFinal rankings:\n";
 foreach ($engines as $e) {
   printf("%d. %s v%d (%s) exit code %d kill reason [%s]\n",
@@ -150,7 +155,7 @@ class Engine {
     $this->player = $player;
     $this->agent = Agent::get_by_id($player->agentId);
     $this->user = User::get_by_id($this->agent->userId);
-    $this->jp = new JailedProcess($this->agent->getFullBinaryName(), $this->agent->getFullDataName, $player->position);
+    $this->jp = new JailedProcess($this->agent->getFullBinaryName(), $this->agent->getFullDataName(), $player->position);
     $this->cash = START_CASH;
     $this->stock = array_fill(1, MAX_DIE, 0);
   }

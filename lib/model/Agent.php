@@ -2,6 +2,7 @@
 
 class Agent extends BaseObject {
   const MAX_SOURCE_SIZE = 65536;
+  const MAX_DATA_SIZE = 1048576;
   const SOURCES_DIR = 'sources'; /* binaries are in the same directory, without the extension */
   static $EXTENSION = array('c' => 'c',
                             'c++' => 'cpp');

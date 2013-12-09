@@ -15,8 +15,6 @@ class JailedProcess {
   public $killReason;          // as defined in Player.php
   private $debugName;          // something to prepend to debug messages
   private $workingDir;         // temporary working dir
-  private $binaryFullPath;     // full path to the binary copied within the working dir
-  private $dataFullPath;       // full path to the binary copied within the working dir
   private $process;            // child resource
   private $pipes;              // child input/output/error file descriptors
 
@@ -32,13 +30,13 @@ class JailedProcess {
     $this->workingDir = OS::tempdir('/tmp/', 'jp_');
 
     // Copy files and chmod the binary
-    $this->binaryFullPath = $this->workingDir . '/' . self::BINARY_NAME;
-    $this->dataFullPath = $this->workingDir . '/' . self::DATA_NAME;
-    if (!@copy($binaryName, $this->binaryFullPath)) {
+    $binaryFullPath = $this->workingDir . '/' . self::BINARY_NAME;
+    $dataFullPath = $this->workingDir . '/' . self::DATA_NAME;
+    if (!@copy($binaryName, $binaryFullPath)) {
       exit("Nu am găsit programul {$this->programName}\n");
     }
-    chmod($this->binaryFullPath, 0755);
-    @copy($dataName, $this->dataFullPath);
+    chmod($binaryFullPath, 0755);
+    @copy($dataName, $dataFullPath);
 
     // Start the binary
     $this->alive = true;
@@ -50,6 +48,18 @@ class JailedProcess {
     $this->process = proc_open("chroot {$this->workingDir} ./" . self::BINARY_NAME, $desc, $this->pipes);
     if (!$this->process) {
       die("Cannot open process for {$this->programName}\n");
+    }
+  }
+
+  /**
+   * Save the agent's persistent data file if it exists and it has a legal file size. Overwrites the destination file.
+   * Does nothing and leaves the destination file unmodified if the data file doesn't exist or if it has an illegal size.
+   **/
+  function saveDataFile($dest) {
+    $dataFullPath = $this->workingDir . '/' . self::DATA_NAME;
+    $size = @filesize($dataFullPath);
+    if ($size && ($size <= Agent::MAX_DATA_SIZE)) {
+      @copy($dataFullPath, $dest);
     }
   }
 
