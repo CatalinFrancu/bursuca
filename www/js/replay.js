@@ -22,7 +22,7 @@ function replayAllForward() {
 
 function replayForward() {
   if (moveNumber == numMoves) {
-    return;
+    return false;
   }
   var move = $('#move_' + moveNumber);
   var player = moveNumber % numPlayers;

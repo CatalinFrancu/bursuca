@@ -1,5 +1,29 @@
 <h3>Partida #{$game->id}</h3>
 
+<h4>Clasamentul final</h4>
+
+<table>
+  <tr>
+    <th>loc</th>
+    <th>utilizator</th>
+    <th>agent</th>
+    <th>motiv / exit code</th>
+    <th>descarcă</th>
+  </tr>
+  {foreach from=$ranks key=i item=rank}
+    {$rec=$playerRecords[$rank]}
+    <tr>
+      <td>{$i+1}</td>
+      <td>{$rec.user->username}</td>
+      <td>v{$rec.agent->version} ({$rec.agent->name})</td>
+      <td>{$rec.player->getKillReason()} ({$rec.player->exitCode|default:0})</td>
+      <td><a href="commands?gameId={$game->id}&agentId={$rec.agent->id}">fișierul de comenzi</a></td>
+    </tr>
+  {/foreach}
+</table>
+
+<h4>Reluare</h4>
+
 <table id="gameBoard">
   <tr>
     <th rowspan="2">utilizator</th>

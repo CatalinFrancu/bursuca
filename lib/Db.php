@@ -25,6 +25,18 @@ class Db {
                  'database' => $matches[6]);
   }
 
+  // Returns a 1-D array of values. Useful when you only need one field from several records.
+  static function getArray($query) {
+    $map = $query->find_array();
+    $results = array();
+    foreach ($map as $row) {
+      foreach ($row as $value) {
+        $results[] = $value;
+      }
+    }
+    return $results;
+  }
+
   static function tableExists($tableName) {
     $r = ORM::for_table($tableName)->raw_query("show tables like '$tableName'", null)->find_one();
     return ($r !== false);

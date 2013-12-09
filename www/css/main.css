@@ -11,6 +11,18 @@ h3:first-letter {
 
 table {
   border-collapse: collapse;
+  margin-top: 20px;
+  width: 100%;
+}
+
+table th {
+  background: #ccc;
+  text-align: left;
+}
+
+table td, table th {
+  border: 1px solid #999;
+  padding: 2px;
 }
 
 a {
@@ -133,11 +145,6 @@ div.errorType {
   color: red;
 }
 
-/** Agents page **/
-a.sourceCodeLink {
-  padding-left: 20px;
-}
-
 /** Game filter **/
 .gameBox {
   border: 1px dotted #999;
@@ -154,21 +161,6 @@ a.sourceCodeLink {
 .gameMenu li {
   display: inline;
   padding-right: 10px;
-}
-
-.gameList {
-  margin-top: 20px;
-  width: 100%;
-}
-
-.gameList th {
-  background: #ccc;
-  text-align: left;
-}
-
-.gameList td, .gameList th {
-  border: 1px solid #999;
-  padding: 2px;
 }
 
 /** Game replay **/

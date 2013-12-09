@@ -27,9 +27,14 @@ foreach ($players as $p) {
 
 $moves = Model::factory('Move')->where('gameId', $game->id)->order_by_asc('number')->find_many();
 
+// Also load the final rankings. Positions are 1-based, so decrement all of them.
+$ranks = Db::getArray(Model::factory('Player')->select('position')->where('gameId', $game->id)->order_by_asc('rank'));
+$ranks = array_map(function($val) { return $val - 1; }, $ranks);
+
 SmartyWrap::assign('game', $game);
 SmartyWrap::assign('playerRecords', $playerRecords);
 SmartyWrap::assign('moves', $moves);
+SmartyWrap::assign('ranks', $ranks);
 SmartyWrap::assign('pageTitle', 'partide');
 SmartyWrap::addJs('replay');
 SmartyWrap::display('game.tpl');
