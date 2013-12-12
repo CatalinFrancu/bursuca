@@ -21,7 +21,7 @@ câte $10 cash. Pe rând, fiecare jucător aruncă o pereche de zaruri. Să zice
 
 <p>Creșterea prețului este întotdeauna posibilă, deci întotdeauna vor exista mutări legale. După cumpărarea de acțiuni, prețul crește cu $1 pentru
 fiecare 3 acțiuni cumpărate, rotunjit în jos. De exemplu, dacă jucătorul cumpără 5 acțiuni la o companie, prețul acțiunilor crește cu $1. După o
-vânzare, prețul scade similar.</p>
+vânzare, prețul scade similar (doar că prețul nu poate scădea sub 1).</p>
 
 <p>Jocul se încheie când un jucător acumulează cel puțin $100 cash. Clasamentul final este dat de cash-ul jucătorilor, ordonat descrescător.</p>
 
