@@ -126,17 +126,28 @@ foreach ($moves as $m) {
   $m->save();
 }
 
-// Update ELO ratings
+// Update ELO ratings. This is a bit iffy because we can have the same engine playing twice.
+// First, create a map of agentId -> change in points
+$eloMap = array();
+foreach ($engines as $e) {
+  $eloMap[$e->agent->id] = 0;
+}
+
+foreach ($engines as $e) {
+  if (($e->agent->id != $winner->agent->id) && $winner->agent->rated && $e->agent->rated) {
+    $change = Elo::ratingChange($winner->agent->elo, $e->agent->elo);
+    $eloMap[$winner->agent->id] += $change;
+    $eloMap[$e->agent->id] -= $change;
+  }
+}
+
+// Now actually update the ratings. Note that the same agent may appear several times in the game.
+// We will save each agent, but that is ok as long as they all have the same ELO.
 foreach ($engines as $e) {
   $e->player->eloStart = $e->agent->elo;
-  if (($e != $winner) && $winner->agent->rated && $e->agent->rated) {
-    $change = Elo::ratingChange($winner->agent->elo, $e->agent->elo);
-    $winner->agent->elo += $change;
-    $e->agent->elo -= $change;
-  }
+  $e->agent->elo += $eloMap[$e->agent->id];
   $e->player->eloEnd = $e->agent->elo;
 }
-$winner->player->eloEnd = $winner->agent->elo;
 
 // Save the players and agents
 foreach ($engines as $e) {
