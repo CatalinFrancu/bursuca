@@ -1,0 +1,1 @@
+<a href="user?id={$u->id}">{$u->username}</a>

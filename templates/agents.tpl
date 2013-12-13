@@ -5,14 +5,12 @@
 <table>
   <tr>
     <th>versiune</th>
-    <th>nume</th>
-    <th>acțiuni</th>
+    <th>ELO</th>
   </tr>
   {foreach from=$agents item=a}
     <tr>
-      <td>v{$a->version}</td>
-      <td>{$a->name}</td>
-      <td><a href="agentSourceCode?id={$a->id}">cod-sursă</a></td>
+      <td>{include file="bits/agent.tpl"}</td>
+      <td>{$a->elo}</td>
     </tr>
   {/foreach}
 </table>

@@ -33,6 +33,11 @@ a:hover {
   color: #800;
 }
 
+.discreet {
+  color: #777;
+  font-size: 80%;
+}
+
 div.title {
   background: #444;
   color: white;
@@ -164,6 +169,46 @@ div.errorType {
 }
 
 /** Game replay **/
+
+.arrowUp {
+  color: #0c0;
+}
+
+.arrowDown {
+  color: #c00;
+}
+
+.pendingGame {
+  background: url("../img/silk/hourglass.png") no-repeat;
+  cursor: help;
+  padding-left: 20px;
+}
+
+.killReason {
+  cursor: help;
+  padding-left: 20px;
+}
+
+.killReason0 {
+  background: url("../img/silk/flag_yellow.png") no-repeat;
+}
+
+.killReason1 {
+  background: url("../img/silk/flag_green.png") no-repeat;
+}
+
+.killReason2 {
+  background: url("../img/silk/flag_red.png") no-repeat;
+}
+
+.killReason3 {
+  background: url("../img/silk/flag_red.png") no-repeat;
+}
+
+.killReason4 {
+  background: url("../img/silk/flag_green.png") no-repeat;
+}
+
 #gameBoard {
   width: 100%;
 }

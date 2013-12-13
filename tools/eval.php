@@ -99,6 +99,8 @@ do {
   printGameState($engines, $stockPrices);
 } while (($e->cash < WIN_CASH) && ($numActivePrograms > 1));
 
+$winner = $e;
+
 // Process cleanup
 foreach ($engines as $e) {
   $e->jp->kill(Player::REASON_GAME_OVER);
@@ -115,19 +117,32 @@ foreach ($engines as $e) {
   }
 }
 
-// Save the game and players
+// Save the game
 $game->status = Game::STATUS_FINISHED;
 $game->save();
-foreach ($engines as $e) {
-  $e->player->save();
-}
 
 // Save the moves
 foreach ($moves as $m) {
   $m->save();
 }
 
-// Update ELOs
+// Update ELO ratings
+foreach ($engines as $e) {
+  $e->player->eloStart = $e->agent->elo;
+  if (($e != $winner) && $winner->agent->rated && $e->agent->rated) {
+    $change = Elo::ratingChange($winner->agent->elo, $e->agent->elo);
+    $winner->agent->elo += $change;
+    $e->agent->elo -= $change;
+  }
+  $e->player->eloEnd = $e->agent->elo;
+}
+$winner->player->eloEnd = $winner->agent->elo;
+
+// Save the players and agents
+foreach ($engines as $e) {
+  $e->player->save();
+  $e->agent->save();
+}
 
 // Copy persistent data files
 foreach ($engines as $e) {
@@ -136,9 +151,10 @@ foreach ($engines as $e) {
 
 print "\nFinal rankings:\n";
 foreach ($engines as $e) {
-  printf("%d. %s v%d (%s) exit code %d kill reason [%s]\n",
+  printf("%d. %s v%d (%s) exit code %d kill reason [%s] rating: %d %+d = %d\n",
          $e->player->rank, $e->user->username, $e->agent->version, $e->agent->name,
-         $e->player->exitCode, $e->player->getKillReason());
+         $e->player->exitCode, $e->player->getKillReason(),
+         $e->player->eloStart, $e->player->eloEnd - $e->player->eloStart, $e->player->eloEnd);
 }
 
 /**************************************************************************/

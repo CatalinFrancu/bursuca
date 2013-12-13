@@ -7,7 +7,9 @@
     <th>loc</th>
     <th>utilizator</th>
     <th>agent</th>
-    <th>final / exit code</th>
+    <th>ELO</th>
+    <th>final</th>
+    <th>exit code</th>
     <th>timp maxim</th>
     <th>timp mediu</th>
     <th>descarcă</th>
@@ -16,13 +18,39 @@
     {$rec=$playerRecords[$rank]}
     <tr>
       <td>{$i+1}</td>
-      <td>{$rec.user->username}</td>
-      <td>v{$rec.agent->version} ({$rec.agent->name})</td>
+      <td>{include file="bits/user.tpl" u=$rec.user}</td>
+      <td>{include file="bits/agent.tpl" a=$rec.agent}</td>
+      <td>
+        {if $rec.agent->rated}
+          {if $game->status == Game::STATUS_FINISHED}
+            {$rec.player->eloStart}
+            {if $rec.player->eloStart < $rec.player->eloEnd}
+              <span class="arrowUp">↗</span>
+            {elseif $rec.player->eloStart > $rec.player->eloEnd}
+              <span class="arrowDown">↘</span>
+            {else}
+              →
+            {/if}
+            {$rec.player->eloEnd}
+          {else}
+            <span class="pendingGame" title="partidă în așteptare"></span>
+          {/if}
+        {else}
+          <span class="discreet">(unrated)</span>
+        {/if}
+      </td>
       <td>
         {if $game->status == Game::STATUS_FINISHED}
-          {$rec.player->getKillReason()} ({$rec.player->exitCode|default:0})
+          <span class="killReason killReason{$rec.player->killReason}" title="{$rec.player->getKillReason()}"></span>
         {else}
-          partidă în așteptare
+          <span class="pendingGame" title="partidă în așteptare"></span>
+        {/if}
+      </td>
+      <td>
+        {if $game->status == Game::STATUS_FINISHED}
+          {$rec.player->exitCode|default:0}
+        {else}
+          <span class="pendingGame" title="partidă în așteptare"></span>
         {/if}
       </td>
       <td>{$rec.maxMoveTime}</td>

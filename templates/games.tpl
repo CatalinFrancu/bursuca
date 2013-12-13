@@ -44,7 +44,7 @@
       <td><a href="game?id={$rec.game->id}">{$rec.game->id}</a></td>
       <td>
         {foreach from=$rec.users key=i item=u}
-          {$u->username} v{$rec.agents[$i]->version} ({$rec.agents[$i]->name})<br/>
+          {include file="bits/user.tpl"} {include file="bits/agent.tpl" a=$rec.agents[$i]}<br/>
         {/foreach}
       </td>
       <td>{$rec.game->created|date_format:'d.m.Y H:i'}</td>

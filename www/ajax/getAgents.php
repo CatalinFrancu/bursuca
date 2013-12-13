@@ -30,8 +30,11 @@ foreach ($agents as $a) {
 $resp = array('results' => array());
 foreach ($matches as $a) {
   $u = $users[$a->userId];
-  $resp['results'][] = array('id' => $a->id,
-                             'text' => "{$u->username} v{$a->version} ({$a->name})");
+  $text = sprintf("%s v%d (%s)", $u->username, $a->version, $a->name);
+  if (!$a->rated) {
+    $text .= ' (unrated)';
+  }
+  $resp['results'][] = array('id' => $a->id, 'text' => $text);
 }
 print json_encode($resp);
 

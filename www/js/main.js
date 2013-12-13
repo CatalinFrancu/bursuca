@@ -19,7 +19,7 @@ function gameFilterInit() {
     },
     allowClear: true,
     initSelection: initSelectionUser,
-    width: '300px',
+    width: '400px',
   });
 
   $('#agentFilter').select2({
@@ -32,7 +32,7 @@ function gameFilterInit() {
     allowClear: true,
     initSelection: initSelectionAgent,
     minimumInputLength: 1,
-    width: '300px',
+    width: '400px',
   });
 
   $('#userFilter').change(submitIfNotEmpty);
@@ -55,7 +55,7 @@ function newGameInit() {
     initSelection: initSelectionAgent,
     minimumInputLength: 1,
     placeholder: 'adaugă un agent...',
-    width: '300px',
+    width: '400px',
   });
 
   $('#newGameToggle').click(function() {
