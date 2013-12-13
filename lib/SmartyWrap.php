@@ -39,7 +39,7 @@ class SmartyWrap {
       switch($id) {
         case 'rainbow':            self::$cssFiles[1] = 'rainbow/solarized-light.css'; break;
         case 'select2':            self::$cssFiles[2] = 'select2/select2.css'; break;
-        case 'main':               self::$cssFiles[3] = 'main.css?v=1'; break;
+        case 'main':               self::$cssFiles[3] = 'main.css?v=2'; break;
         default:
           FlashMessage::add("Cannot load CSS file {$id}");
           Util::redirect(Util::$wwwRoot);
