@@ -127,6 +127,8 @@ foreach ($moves as $m) {
   $m->save();
 }
 
+// Update ELOs
+
 // Copy persistent data files
 foreach ($engines as $e) {
   $e->jp->saveDataFile($e->agent->getFullDataName());
