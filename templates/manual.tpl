@@ -175,3 +175,25 @@ păstra. De asemenea, orice alt fișier creat nu va fi salvat între partide.</p
   <li>Asigură-te că agenții tăi funcționează corect punându-i să joace cu diferite versiuni ale utilizatorului <b>cata.</b></li>
 
 </ul>
+
+<h4>Coeficientul ELO</h4>
+
+<p>Fiecare agent are un coeficient ELO, similar celui folosit la jocul de șah. Acesta pornește de la 1.600, crește de câte ori agentul câștigă o
+partidă și scade de câte ori agentul pierde o partidă (toate locurile în afară de locul I sunt pierzătoare). Formula exactă de calcul este <a
+href="http://en.wikipedia.org/wiki/Elo_rating_system#Mathematical_details">cea de la Wikipedia</a> cu constantele D = 400 (constanta de disparitate)
+și K = 32.</p>
+
+<p>Ce înseamnă, tradusă în cuvinte, această formulă? Când doi jucători de coeficient ELO egal joacă o partidă, câștigătorul va primi 16 puncte, iar
+pierzătorul va pierde 16 puncte. Cu cât jucătorul câștigător este mai bine cotat, cu atât transferul de puncte este mai mic, căci surpriza este mai
+mică dacă el câștigă. De exemplu, dacă diferența între cei doi este de 400 de puncte, jucătorul favorit va câștiga doar 3 puncte în cazul în care
+câștigă, iar învinsul va pierde doar 3 puncte. Similar, dacă un jucător câștigă o partidă în fața altuia cu 400 de puncte mai bine cotat, transferul
+de puncte va fi de 29 de puncte.</p>
+
+<p>În fiecare meci, câștigătorul obține puncte conform acestei formule de la fiecare dintre pierzători. Există două excepții:</p>
+
+<ul>
+  <li>Când două copii ale aceluiași agent participă la joc, iar una dintre ele câștigă, între cele două copii nu se face un transfer de puncte.</li>
+
+  <li>Când unul dintre agenți este marcat ca „unrated” (disponibil doar pentru partide neoficiale), el nici nu va câștiga, nici nu va ceda
+  puncte.</li>
+</ul>
