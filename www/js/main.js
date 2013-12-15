@@ -97,7 +97,7 @@ function indexInit() {
     caption: '',
    	colModel:[
       {name: 'userId', hidden: true},
-      {name: 'agentId'},
+      {name: 'agentId', hidden: true},
    		{name: 'username', index: 'username', formatter: userFormatter},
    		{name: 'agent', index: 'agent', sortable: false, formatter: agentFormatter},
    		{name: 'elo', index: 'elo', align: 'right'},
