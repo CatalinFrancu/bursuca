@@ -154,10 +154,6 @@ păstra. De asemenea, orice alt fișier creat nu va fi salvat între partide.</p
 
 <p>Iată <a href="download/dummy.cpp">un exemplu de cod-sursă</a>. Acest agent joacă corect, dar are o strategie absolut naivă.</p>
 
-<h4>Turnee</h4>
-
-<p>Această secțiune este încă în lucru. Tot ce știm sigur este că doar ultima versiune de agent a fiecărui utilizator va participa la turnee.</p>
-
 <h4>Utilizarea acestui server</h4>
 
 <p>Serverul este minimalist. Sperăm să nu îți pună probleme.</p>
@@ -197,3 +193,19 @@ de puncte va fi de 29 de puncte.</p>
   <li>Când unul dintre agenți este marcat ca „unrated” (disponibil doar pentru partide neoficiale), el nici nu va câștiga, nici nu va ceda
   puncte.</li>
 </ul>
+
+<h4>Turnee</h4>
+
+<p>Un turneu cu N participanți, cu P agenți în fiecare partidă și cu R runde se desfășoară astfel:</p>
+
+<ul>
+
+  <li>Se completează N până la un multiplu de P, fie el N', prin adăugarea de strategii dummy.</li>
+  <li>Participanții sunt grupați câte P, în mod aleator, și se desfășoară prima rundă.</li>
+  <li>Se procedează similar pentru toate cele R runde.</li>
+  <li>Câștigătorul fiecărei partide primește 1 punct.</li>
+  <li>Participantul cu cele mai multe puncte este câștigătorul turneului.</li>
+
+</ul>
+
+<p>La turneul final al cercului de informatică vor participa numai ultimele versiuni ale fiecărui agent.</p>
