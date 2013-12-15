@@ -32,7 +32,7 @@
   </form>
 </div>
 
-<table class="gameList">
+<table class="mule">
   <tr>
    <th>ID</th>
    <th>jucători</th>

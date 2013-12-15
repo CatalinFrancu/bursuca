@@ -9,18 +9,18 @@ h3:first-letter {
   text-transform: uppercase;
 }
 
-table {
+table.mule {
   border-collapse: collapse;
   margin-top: 20px;
   width: 100%;
 }
 
-table th {
+table.mule th {
   background: #ccc;
   text-align: left;
 }
 
-table td, table th {
+table.mule td, table.mule th {
   border: 1px solid #999;
   padding: 2px;
 }

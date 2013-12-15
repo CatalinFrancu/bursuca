@@ -37,9 +37,11 @@ class SmartyWrap {
     // Note the priorities. This allows files to be added in any order, regardless of dependencies
     foreach (func_get_args() as $id) {
       switch($id) {
-        case 'rainbow':            self::$cssFiles[1] = 'rainbow/solarized-light.css'; break;
-        case 'select2':            self::$cssFiles[2] = 'select2/select2.css'; break;
-        case 'main':               self::$cssFiles[3] = 'main.css?v=2'; break;
+        case 'jqueryui':           self::$cssFiles[1] = 'smoothness/jquery-ui.min.css'; break;
+        case 'jqgrid':             self::$cssFiles[2] = 'ui.jqgrid.css'; break;
+        case 'rainbow':            self::$cssFiles[3] = 'rainbow/solarized-light.css'; break;
+        case 'select2':            self::$cssFiles[4] = 'select2/select2.css'; break;
+        case 'main':               self::$cssFiles[5] = 'main.css?v=2'; break;
         default:
           FlashMessage::add("Cannot load CSS file {$id}");
           Util::redirect(Util::$wwwRoot);
@@ -51,14 +53,24 @@ class SmartyWrap {
     // Note the priorities. This allows files to be added in any order, regardless of dependencies
     foreach (func_get_args() as $id) {
       switch($id) {
-        case 'jquery':           self::$jsFiles[1] = 'jquery-1.10.2.min.js'; break; 
-        case 'rainbow':          self::$jsFiles[2] = 'rainbow-custom.min.js'; break;
+        case 'jquery':
+          self::$jsFiles[1] = 'jquery-1.10.2.min.js'; break; 
+        case 'jqueryui':
+          self::$jsFiles[2] = 'jquery-ui-1.10.3.custom.min.js'; break; 
+        case 'jqgrid':
+          self::$jsFiles[3] = 'grid.locale-ro.js';
+          self::$jsFiles[4] = 'jquery.jqGrid.min.js';
+          break; 
+        case 'rainbow':
+          self::$jsFiles[5] = 'rainbow-custom.min.js'; break;
         case 'select2':
-          self::$jsFiles[3] = 'select2.min.js';
-          self::$jsFiles[4] = 'select2_locale_ro.js';
+          self::$jsFiles[6] = 'select2.min.js';
+          self::$jsFiles[7] = 'select2_locale_ro.js';
           break;
-        case 'main':             self::$jsFiles[5] = 'main.js?v=1'; break;
-        case 'replay':           self::$jsFiles[6] = 'replay.js?v=1'; break;
+        case 'main':
+          self::$jsFiles[8] = 'main.js?v=1'; break;
+        case 'replay':
+          self::$jsFiles[9] = 'replay.js?v=1'; break;
         default:
           FlashMessage::add("Cannot load JS script {$id}");
           Util::redirect(Util::$wwRoot);

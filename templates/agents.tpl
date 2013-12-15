@@ -2,7 +2,7 @@
   <h3>agenții mei</h3>
 {/if}
 
-<table>
+<table class="mule">
   <tr>
     <th>versiune</th>
     <th>ELO</th>

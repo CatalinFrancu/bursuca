@@ -2,7 +2,7 @@
 
 <h3>Agenți</h3>
 
-<table>
+<table class="mule">
   <tr>
     <th>versiune</th>
     <th>ELO</th>

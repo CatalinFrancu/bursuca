@@ -2,7 +2,7 @@
 
 <h4>Clasamentul final</h4>
 
-<table>
+<table class="mule">
   <tr>
     <th>loc</th>
     <th>utilizator</th>
@@ -64,7 +64,7 @@
 
 <h4>Reluare</h4>
 
-<table id="gameBoard">
+<table id="gameBoard" class="mule">
   <tr>
     <th rowspan="2">utilizator</th>
     <th rowspan="2">agent</th>
@@ -119,7 +119,7 @@
   {foreach from=$moves item=m}
     <li id="move_{$m->number-1}" data-action="{$m->action}" data-arg="{$m->arg}" data-company="{$m->company}" data-time="{$m->time}"></li>
   {/foreach}
-</table>
+</ul>
 
 <script>
   $(replayInit);
