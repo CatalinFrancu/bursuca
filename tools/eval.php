@@ -99,7 +99,16 @@ do {
   printGameState($engines, $stockPrices);
 } while (($e->cash < WIN_CASH) && ($numActivePrograms > 1));
 
+// The winner is not necessarily the player to have made the last move (that might
+// have been a timeout or a bad move). The winner can also be the last player alive.
 $winner = $e;
+if (!$winner->jp->alive) {
+  foreach ($engines as $e) {
+    if ($e->jp->alive) {
+      $winner = $e;
+    }
+  }
+}
 
 // Process cleanup
 foreach ($engines as $e) {
