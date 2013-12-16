@@ -48,8 +48,8 @@ foreach ($playerRecords as $rec) {
 }
 $lines[] = implode(' ', $line1);
 $lines[] = "{$game->price1} {$game->price2} {$game->price3} {$game->price4} {$game->price5} {$game->price6}";
-foreach ($moves as $i => $m) {
-  if (($i - $povPlayer->position) % count($playerRecords)) {
+foreach ($moves as $m) {
+  if (($m->number - $povPlayer->position) % count($playerRecords)) {
     $lines[] = "{$m->action} {$m->arg} {$m->company}";
   } else {
     $lines[] = "{$m->arg} {$m->company}";
