@@ -46,48 +46,12 @@ if ($newGamePlayers) {
   }
 }
 
-// Load the games to show.
-// - When the $all, $agentId or $userId parameters are set, obey those
-// - Otherwise, if a user is logged in, show that user's games
-// - Otherwise, no user is logged in and we show all games
-if ($all) {
-  $games = Model::factory('Game');
-} else if ($agentId) {
-  $games = Model::factory('Game')->select('game.*')->distinct()
-    ->join('player', array('player.gameId', '=', 'game.id'))
-    ->where('player.agentId', $agentId);
-} else if ($userId || $user) {
-  $realUserId = $userId ? $userId : $user->id;
-  $games = Model::factory('Game')->select('game.*')->distinct()
-    ->join('player', array('player.gameId', '=', 'game.id'))
-    ->join('agent', array('player.agentId', '=', 'agent.id'))
-    ->where('agent.userId', $realUserId);
-} else {
-  $games = Model::factory('Game');
-}
-
-$games = $games->order_by_desc('created')->find_many();
-
-// Load the agents and users for each game
-$gameRecords = array();
-foreach ($games as $g) {
-  $agents = array();
-  $users = array();
-  $players = Model::factory('Player')->where('gameId', $g->id)->order_by_asc('position')->find_many();
-  foreach ($players as $p) {
-    $agent = Agent::get_by_id($p->agentId);
-    $agents[] = $agent;
-    $users[] = User::get_by_id($agent->userId);
-  }
-  $gameRecords[] = array('game' => $g, 'agents' => $agents, 'users' => $users);
-}
-
 SmartyWrap::assign('userId', $userId);
 SmartyWrap::assign('agentId', $agentId);
-SmartyWrap::assign('gameRecords', $gameRecords);
+SmartyWrap::assign('all', $all);
 SmartyWrap::assign('pageTitle', 'partide');
-SmartyWrap::addCss('select2');
-SmartyWrap::addJs('select2');
+SmartyWrap::addCss('select2', 'jqueryui', 'jqgrid');
+SmartyWrap::addJs('select2', 'jqueryui', 'jqgrid');
 SmartyWrap::display('games.tpl');
 
 ?>

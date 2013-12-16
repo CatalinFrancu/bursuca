@@ -16,6 +16,7 @@
     <button type="submit">aplică</button>
   </form>
 
+  <div id="all" hidden>{$all}</div>
   <a href="?all=1">arată toate partidele</a>
 </div>
 
@@ -32,28 +33,11 @@
   </form>
 </div>
 
-<table class="mule">
-  <tr>
-   <th>ID</th>
-   <th>jucători</th>
-   <th>creată la</th>
-   <th>stare</th>
-  </tr>
-  {foreach from=$gameRecords item=rec}
-    <tr>
-      <td><a href="game?id={$rec.game->id}">{$rec.game->id}</a></td>
-      <td>
-        {foreach from=$rec.users key=i item=u}
-          {include file="bits/user.tpl"} {include file="bits/agent.tpl" a=$rec.agents[$i]}<br/>
-        {/foreach}
-      </td>
-      <td>{$rec.game->created|date_format:'d.m.Y H:i'}</td>
-      <td>{$rec.game->getStatusName()}</td>
-    </tr>
-  {/foreach}
-</table>
+<table id="gameListingGrid"></table>
+<div id="pager"></div>
 
 <script>
   $(gameFilterInit);
   $(newGameInit);
+  $(gamesPageInit);
 </script>

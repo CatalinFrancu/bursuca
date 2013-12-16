@@ -123,3 +123,54 @@ function userFormatter(cellValue, options, rowObject) {
 function agentFormatter(cellValue, options, rowObject) {
   return '<a href="agent?id=' + rowObject[1] + '">' + cellValue + '</a>';
 }
+
+function gamesPageInit() {
+  var url = wwwRoot + 'ajax/getGridGames';
+  var userId = $('#userFilter').val();
+  var agentId = $('#agentFilter').val();
+  var all = $('#all').text();
+  if (userId) {
+    url += '?userId=' + userId;
+  } else if (agentId) {
+    url += '?agentId=' + agentId;
+  } else if (all) {
+    url += '?all=1';
+  }
+  $("#gameListingGrid").jqGrid({
+    autowidth: true,
+    caption: '',
+   	colModel:[
+      {name: 'id', formatter: 'showlink', formatoptions: { baseLinkUrl: 'game' }, width: 20},
+   		{name: 'players', sortable: false, formatter: gamePlayerFormatter},
+   		{name: 'status', hidden: true},
+   		{name: 'statusName', index: 'status', formatter: gameStatusFormatter, width: 20},
+   	],
+   	colNames: ['ID', 'participanți', 'ascuns', 'stare'],
+	  datatype: "json",
+    height: 'auto',
+   	pager: '#pager',
+   	rowList: [10, 20, 50, 100],
+   	rowNum: 20,
+   	sortname: 'game.id',
+    sortorder: 'desc',
+   	url: url,
+    viewrecords: true,
+  });
+  $("#gameListingGrid").jqGrid('navGrid', '#pager', {edit: false, add: false, del: false});
+}
+
+function gamePlayerFormatter(cellValue, options, rowObject) {
+  var s = '';
+  for (var i = 0; i < cellValue.length; i++) {
+    if (i) {
+      s += ' • ';
+    }
+    s += '<a href="user?id=' + cellValue[i].userId + '">' + cellValue[i].username + '</a> ';
+    s += '<a href="agent?id=' + cellValue[i].agentId + '">v' + cellValue[i].version + '</a>';
+  }
+  return s;
+}
+
+function gameStatusFormatter(cellValue, options, rowObject) {
+  return '<div class="gameStatus gameStatus' + rowObject[2] + '">' + cellValue + '</span>';
+}
