@@ -36,8 +36,8 @@ $ranks = Db::getArray(Model::factory('Player')->select('position')->where('gameI
 $ranks = array_map(function($val) { return $val - 1; }, $ranks);
 
 // Compute the maximum / total / average move time
-foreach ($moves as $i => $m) {
-  $r = ($i - 1) % count($playerRecords);
+foreach ($moves as $m) {
+  $r = ($m->number - 1) % count($playerRecords);
   if ($m->time > $playerRecords[$r]['maxMoveTime']) {
     $playerRecords[$r]['maxMoveTime'] = $m->time;
   }
