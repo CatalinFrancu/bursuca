@@ -1,4 +1,4 @@
-<h3>Utilizator: {$user->username}</h3>
+<h3>Utilizator: {$displayUser->username}</h3>
 
 <h3>Agenți</h3>
 
