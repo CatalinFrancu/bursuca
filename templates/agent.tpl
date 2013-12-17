@@ -1,12 +1,14 @@
-<h3>Agent: v{$agent->version} ({$agent->name})</h3>
-
-utilizator: {include file="bits/user.tpl" u=$owner}<br>
-ELO: {$agent->elo}<br>
-adăugat pe {$agent->created|date_format:'d.m.Y H:i'}<br>
-
-{if !$agent->rated}
-  <br>Acest agent nu participă la rating.<br>
-{/if}
+<div class="pageHeader">Agent: v{$agent->version} ({$agent->name})</div>
+<div class="pageDetails">
+  <ul>
+    <li class="right created" title="data creării">{$agent->created|date_format:'%e %B %Y %H:%M'}</li>
+    <li class="creator" title="creator">{include file="bits/user.tpl" u=$owner}</li>
+    <li>ELO: <b>{$agent->elo}</b></li>
+    {if !$agent->rated}
+      <li class="unrated">nu participă la rating</li>
+    {/if}
+  </ul>
+</div>
 
 {if $showSourceCode}
   <h3>Cod-sursă</h3>

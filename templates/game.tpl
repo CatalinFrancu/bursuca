@@ -1,11 +1,15 @@
-<h3>Partida #{$game->id}</h3>
+<div class="pageHeader">Partida #{$game->id}</div>
+<div class="pageDetails">
+  <ul>
+    <li class="right created" title="data creării">{$game->created|date_format:'%e %B %Y %H:%M'}</li>
+    <li class="gameStatus gameStatus{$game->status}" title="stare">{$game->getStatusName()}</span></li>
+    {if $game->tourneyId}
+      <li class="tourney" title="turneu"><a href="tourney?id={$game->tourneyId}">turneul #{$game->tourneyId}</a>, runda {$game->round}</li>
+    {/if}
+  </ul>
+</div>
 
-creată pe {$game->created|date_format:'d.m.Y H:i'}<br>
-{if $game->tourneyId}
-  jucată în <a href="tourney?id={$game->tourneyId}">turneul #{$game->tourneyId}</a>, runda {$game->round}<br>
-{/if}
-
-<h4>Clasamentul final</h4>
+<h3>{if $game->status == Game::STATUS_FINISHED}clasament{else}agenți{/if}</h3>
 
 <table class="mule">
   <tr>
@@ -67,65 +71,67 @@ creată pe {$game->created|date_format:'d.m.Y H:i'}<br>
   {/foreach}
 </table>
 
-<h4>Reluare</h4>
+{if $game->status == Game::STATUS_FINISHED}
+  <h3>reluare</h3>
 
-<table id="gameBoard" class="mule">
-  <tr>
-    <th rowspan="2">utilizator</th>
-    <th rowspan="2">agent</th>
-    <th class="companyName center">C1</th>
-    <th class="companyName center">C2</th>
-    <th class="companyName center">C3</th>
-    <th class="companyName center">C4</th>
-    <th class="companyName center">C5</th>
-    <th class="companyName center">C6</th>
-    <th rowspan="2" class="center">cash</th>
-    <th rowspan="2" class="center">total</th>
-    <th rowspan="2">timp (ms)</th>
-  </tr>
-  <tr>
-    {foreach from=$game->getStartingPrices() key=i item=p}
-      <th id="stockPrice_{$i+1}" class="dollars center">{$p}</th>
-    {/foreach}
-  </tr>
-  {foreach from=$playerRecords key=i item=rec}
-    <tr class="playerRow">
-      <td id="username_{$i}">{$rec.user->username}</td>
-      <td id="agentName_{$i}">v{$rec.agent->version} ({$rec.agent->name})</td>
-      {section name="company" start=1 loop=7}
-        <td id="stock_{$i}_{$smarty.section.company.index}" class="center">0</td>
-      {/section}
-      <td id="cash_{$i}" class="cash dollars expand center">10</td>
-      <td id="total_{$i}" class="total dollars expand center">10</td>
-      <td id="time_{$i}">0</td>
+  <table id="gameBoard" class="mule">
+    <tr>
+      <th rowspan="2">utilizator</th>
+      <th rowspan="2">agent</th>
+      <th class="companyName center">C1</th>
+      <th class="companyName center">C2</th>
+      <th class="companyName center">C3</th>
+      <th class="companyName center">C4</th>
+      <th class="companyName center">C5</th>
+      <th class="companyName center">C6</th>
+      <th rowspan="2" class="center">cash</th>
+      <th rowspan="2" class="center">total</th>
+      <th rowspan="2">timp (ms)</th>
     </tr>
-  {/foreach}
-  <tr>
-    <td class="controlBar" colspan="11">
-      <a id="controlFirst" class="controlLink" href="#">prima</a>
-      <a id="controlPrev" class="controlLink" href="#">înapoi</a>
-      <a id="controlNext" class="controlLink" href="#">înainte</a>
-      <a id="controlLast" class="controlLink" href="#">ultima</a>
-    </td>
-  </tr>
-</table>
+    <tr>
+      {foreach from=$game->getStartingPrices() key=i item=p}
+        <th id="stockPrice_{$i+1}" class="dollars center">{$p}</th>
+      {/foreach}
+    </tr>
+    {foreach from=$playerRecords key=i item=rec}
+      <tr class="playerRow">
+        <td id="username_{$i}">{$rec.user->username}</td>
+        <td id="agentName_{$i}">v{$rec.agent->version} ({$rec.agent->name})</td>
+        {section name="company" start=1 loop=7}
+          <td id="stock_{$i}_{$smarty.section.company.index}" class="center">0</td>
+        {/section}
+        <td id="cash_{$i}" class="cash dollars expand center">10</td>
+        <td id="total_{$i}" class="total dollars expand center">10</td>
+        <td id="time_{$i}">0</td>
+      </tr>
+    {/foreach}
+    <tr>
+      <td class="controlBar" colspan="11">
+        <a id="controlFirst" class="controlLink" href="#">prima</a>
+        <a id="controlPrev" class="controlLink" href="#">înapoi</a>
+        <a id="controlNext" class="controlLink" href="#">înainte</a>
+        <a id="controlLast" class="controlLink" href="#">ultima</a>
+      </td>
+    </tr>
+  </table>
 
-<div id="moveInfo">
-  <div id="die1" class="die"></div>
-  <div id="die2" class="die"></div>
-  <div id="moveCounter"></div>
-  <div id="moveText" hidden>
-    <span id="mUser"></span> <span id="mAgent"></span> <span id="mAction"></span> (<span id="mTime"></span> ms)
+  <div id="moveInfo">
+    <div id="die1" class="die"></div>
+    <div id="die2" class="die"></div>
+    <div id="moveCounter"></div>
+    <div id="moveText" hidden>
+      <span id="mUser"></span> <span id="mAgent"></span> <span id="mAction"></span> (<span id="mTime"></span> ms)
+    </div>
   </div>
-</div>
-<div style="clear: both;"></div>
+  <div style="clear: both;"></div>
 
-<ul id="moves" hidden>
-  {foreach from=$moves item=m}
-    <li id="move_{$m->number-1}" data-action="{$m->action}" data-arg="{$m->arg}" data-company="{$m->company}" data-time="{$m->time}"></li>
-  {/foreach}
-</ul>
+  <ul id="moves" hidden>
+    {foreach from=$moves item=m}
+      <li id="move_{$m->number-1}" data-action="{$m->action}" data-arg="{$m->arg}" data-company="{$m->company}" data-time="{$m->time}"></li>
+    {/foreach}
+  </ul>
 
-<script>
-  $(replayInit);
-</script>
+  <script>
+    $(replayInit);
+  </script>
+{/if}

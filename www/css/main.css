@@ -83,6 +83,57 @@ a#openidLink {
   padding-left: 20px;
 }
 
+.pageHeader {
+  background: #ccc;
+  border-left: 1px solid #999;
+  border-right: 1px solid #999;
+  border-top: 1px solid #999;
+  font-size: 120%;
+  font-weight: bold;
+  padding: 2px 6px;
+}
+
+.pageDetails {
+  background: #f5f5f5;
+  border: 1px solid #999;
+  padding: 2px 6px;
+}
+
+.pageDetails ul {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.pageDetails li {
+  display: inline;
+  padding-right: 25px;
+}
+
+.pageDetails .right {
+  float: right;
+}
+
+.created {
+  background: url("../img/silk/date.png") no-repeat;
+  padding-left: 20px;
+}
+
+.creator {
+  background: url("../img/silk/user_suit.png") no-repeat;
+  padding-left: 20px;
+}
+
+.tourney {
+  background: url("../img/silk/coins.png") no-repeat;
+  padding-left: 20px;
+}
+
+.unrated {
+  background: url("../img/silk/cancel.png") no-repeat;
+  padding-left: 20px;
+}
+
 footer {
   border-top: 1px solid #bbb;
   color: #777;

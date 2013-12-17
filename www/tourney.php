@@ -67,6 +67,7 @@ usort($records, function($a, $b) { return $b['score'] - $a['score']; });
 
 SmartyWrap::assign('tourney', $tourney);
 SmartyWrap::assign('records', $records);
+SmartyWrap::assign('creator', User::get_by_id($tourney->userId));
 SmartyWrap::assign('maxScheduledRound', $maxScheduledRound);
 SmartyWrap::assign('pageTitle', "turneul {$tourney->id}");
 SmartyWrap::addCss('jqueryui', 'jqgrid');

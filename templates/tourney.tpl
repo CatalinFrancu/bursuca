@@ -1,9 +1,16 @@
-<h3>Turneul #{$tourney->id}</h3>
+<div class="pageHeader">Turneul #{$tourney->id}</div>
+<div class="pageDetails">
+  <ul>
+    <li class="right created" title="data creării">{$tourney->created|date_format:'%e %B %Y %H:%M'}</li>
+    <li class="right creator" title="creator">{include file="bits/user.tpl" u=$creator}</li>
+    <li class="tourneyStatus tourneyStatus{$tourney->getStatus()}" title="stare">{$tourney->getStatusName()}</li>
+    <li><b>{$records|@count}</b> participanți</li>
+    <li><b>{$tourney->numRounds}</b> runde</li>
+    <li><b>{$tourney->gameSize}</b> agenți la masă</li>
+  </ul>
+</div>
 
-creat pe {$tourney->created|date_format:'d.m.Y H:i'}<br>
-runde: {$tourney->numRounds}<br>
-participanți: {$records|@count}<br>
-mărime: {$tourney->gameSize} agenți la fiecare masă
+<h3>Agenți</h3>
 
 <table class="mule">
   <tr>

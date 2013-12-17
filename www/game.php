@@ -10,10 +10,6 @@ if (!$game) {
   Util::redirect('games');
 }
 
-if (!$game->isFinished()) {
-  FlashMessage::add('Această partidă nu a fost încă jucată.', 'warning');
-}
-
 $players = Model::factory('Player')->where('gameId', $game->id)->order_by_asc('position')->find_many();
 $playerRecords = array();
 

@@ -185,9 +185,9 @@ function gamesPageInit() {
     autowidth: true,
     caption: '',
    	colModel:[
-      {name: 'id', formatter: 'showlink', formatoptions: { baseLinkUrl: 'game' }, width: 20},
-   		{name: 'tourneyId', formatter: tourneyFormatter, width: 20},
-   		{name: 'round', formatter: zeroFormatter, width: 20},
+      {name: 'id', align: 'center', formatter: 'showlink', formatoptions: { baseLinkUrl: 'game' }, width: 20},
+   		{name: 'tourneyId', align: 'center', formatter: tourneyFormatter, width: 20},
+   		{name: 'round', align: 'center', formatter: zeroFormatter, width: 20},
    		{name: 'playerData', sortable: false, formatter: gamePlayerFormatter},
    		{name: 'status', hidden: true},
    		{name: 'statusName', index: 'status', formatter: gameStatusFormatter, width: 20},
@@ -195,6 +195,7 @@ function gamesPageInit() {
    	colNames: ['ID', 'turneu', 'rundă', 'participanți', 'ascuns', 'stare'],
 	  datatype: "json",
     height: 'auto',
+    onSelectRow: gridGameClick,
    	pager: '#pager',
    	rowList: [10, 20, 50, 100],
    	rowNum: 20,
@@ -223,6 +224,7 @@ function tourneysPageInit() {
    	colNames: ['ID', 'ascuns', 'creator', 'participanți', 'runde', 'mărimea mesei', 'ascuns', 'stare'],
 	  datatype: "json",
     height: 'auto',
+    onSelectRow: gridTourneyClick,
    	pager: '#pager',
    	rowList: [10, 20, 50, 100],
    	rowNum: 20,
@@ -248,6 +250,7 @@ function tourneyGamesInit() {
    	colNames: ['ID', 'rundă', 'participanți', 'ascuns', 'stare'],
 	  datatype: "json",
     height: 'auto',
+    onSelectRow: gridGameClick,
    	pager: '#pager',
    	rowList: [10, 20, 50, 100],
    	rowNum: 20,
@@ -257,6 +260,14 @@ function tourneyGamesInit() {
     viewrecords: true,
   });
   $("#gameListingGrid").jqGrid('navGrid', '#pager', {edit: false, add: false, del: false});
+}
+
+function gridGameClick(rowId) {
+  window.location = wwwRoot + 'game?id=' + rowId;
+}
+
+function gridTourneyClick(rowId) {
+  window.location = wwwRoot + 'tourney?id=' + rowId;
 }
 
 function gamePlayerFormatter(cellValue, options, rowObject) {
