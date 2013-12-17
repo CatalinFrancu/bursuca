@@ -64,10 +64,29 @@ function newGameInit() {
   });
 }
 
+function newTourneyInit() {
+  $('#tourneyPlayers').select2({
+    ajax: {
+      data: function(term, page) { return { term: term }; },
+      dataType: 'json',
+      results: function(data, page) { return data; }, 
+      url: wwwRoot + 'ajax/getAgents.php',
+    },
+    allowClear: true,
+    initSelection: initSelectionAgentMultiple,
+    minimumInputLength: 1,
+    multiple: true,
+    placeholder: 'adaugă agenți...',
+    width: '700px',
+  });
+
+  $('#addLastVersionLink').click(addLastVersion);
+}
+
 function initSelectionUser(element, callback) {
   var id = $(element).val();
   if (id) {
-    $.ajax(wwwRoot + 'ajax/getUserById.php?id=' + id, {dataType: 'json'})
+    $.ajax(wwwRoot + 'ajax/getUserById?id=' + id, {dataType: 'json'})
       .done(function(data) {
         callback({ id: id, text: data });
       });
@@ -77,11 +96,37 @@ function initSelectionUser(element, callback) {
 function initSelectionAgent(element, callback) {
   var id = $(element).val();
   if (id) {
-    $.ajax(wwwRoot + 'ajax/getAgentById.php?id=' + id, {dataType: 'json'})
+    $.ajax(wwwRoot + 'ajax/getAgentById?id=' + id, {dataType: 'json'})
       .done(function(data) {
         callback({ id: id, text: data });
       });
   }
+}
+
+/** Initializes or updates the select2 values when multiple values are allowed **/
+function initSelectionAgentMultiple(element, callback) {
+  var data = [];
+
+  $(element.val().split(',')).each(function (index, id) {
+    $.ajax({
+      url: wwwRoot + 'ajax/getAgentById?id=' + id,
+      dataType: 'json',
+      success: function(displayValue) {
+        data.push({ id: id, text: displayValue });
+      },
+      async: false,
+    });
+  });
+  callback(data);
+}
+
+/* Adds the last agent version of each user to the select2 field */
+function addLastVersion() {
+  $.getJSON(wwwRoot + 'ajax/getLastVersionAgents', null, function(data) {
+    var existing = $('#tourneyPlayers').select2('val');
+    $('#tourneyPlayers').select2('val', existing.concat(data));
+  });
+  return false;
 }
 
 function submitIfNotEmpty() {
@@ -96,13 +141,13 @@ function indexInit() {
     autowidth: true,
     caption: '',
    	colModel:[
+      {name: 'id', hidden: true},
       {name: 'userId', hidden: true},
-      {name: 'agentId', hidden: true},
    		{name: 'username', index: 'username', formatter: userFormatter},
-   		{name: 'agent', index: 'agent', sortable: false, formatter: agentFormatter},
+   		{name: 'agentName', index: 'agent', sortable: false, formatter: agentFormatter},
    		{name: 'elo', index: 'elo', align: 'right'},
    	],
-   	colNames: ['userId', 'agentId', 'utilizator', 'agent', 'ELO'],
+   	colNames: ['id', 'userId', 'utilizator', 'agent', 'ELO'],
 	  datatype: "json",
     height: 'auto',
    	pager: '#pager',
@@ -117,11 +162,11 @@ function indexInit() {
 }
 
 function userFormatter(cellValue, options, rowObject) {
-  return '<a href="user?id=' + rowObject[0] + '">' + cellValue + '</a>';
+  return '<a href="user?id=' + rowObject.userId + '">' + cellValue + '</a>';
 }
 
 function agentFormatter(cellValue, options, rowObject) {
-  return '<a href="agent?id=' + rowObject[1] + '">' + cellValue + '</a>';
+  return '<a href="agent?id=' + rowObject.id + '">' + cellValue + '</a>';
 }
 
 function gamesPageInit() {
@@ -141,11 +186,13 @@ function gamesPageInit() {
     caption: '',
    	colModel:[
       {name: 'id', formatter: 'showlink', formatoptions: { baseLinkUrl: 'game' }, width: 20},
-   		{name: 'players', sortable: false, formatter: gamePlayerFormatter},
+   		{name: 'tourneyId', formatter: tourneyFormatter, width: 20},
+   		{name: 'round', formatter: zeroFormatter, width: 20},
+   		{name: 'playerData', sortable: false, formatter: gamePlayerFormatter},
    		{name: 'status', hidden: true},
    		{name: 'statusName', index: 'status', formatter: gameStatusFormatter, width: 20},
    	],
-   	colNames: ['ID', 'participanți', 'ascuns', 'stare'],
+   	colNames: ['ID', 'turneu', 'rundă', 'participanți', 'ascuns', 'stare'],
 	  datatype: "json",
     height: 'auto',
    	pager: '#pager',
@@ -154,6 +201,59 @@ function gamesPageInit() {
    	sortname: 'game.id',
     sortorder: 'desc',
    	url: url,
+    viewrecords: true,
+  });
+  $("#gameListingGrid").jqGrid('navGrid', '#pager', {edit: false, add: false, del: false});
+}
+
+function tourneysPageInit() {
+  $("#tourneysGrid").jqGrid({
+    autowidth: true,
+    caption: '',
+   	colModel:[
+      {name: 'id', align: 'center', formatter: 'showlink', formatoptions: { baseLinkUrl: 'tourney' }, width: 40},
+      {name: 'userId', hidden: true},
+   		{name: 'username', index: 'username', formatter: userFormatter},
+   		{name: 'participants', align: 'center' },
+   		{name: 'numRounds', align: 'center' },
+   		{name: 'gameSize', align: 'center' },
+   		{name: 'status', hidden: true},
+   		{name: 'statusName', index: 'status', formatter: tourneyStatusFormatter},
+   	],
+   	colNames: ['ID', 'ascuns', 'creator', 'participanți', 'runde', 'mărimea mesei', 'ascuns', 'stare'],
+	  datatype: "json",
+    height: 'auto',
+   	pager: '#pager',
+   	rowList: [10, 20, 50, 100],
+   	rowNum: 20,
+   	sortname: 'id',
+    sortorder: 'desc',
+   	url: wwwRoot + 'ajax/getGridTourneys',
+    viewrecords: true,
+  });
+  $("#tourneyGrid").jqGrid('navGrid', '#pager', {edit: false, add: false, del: false});
+}
+
+function tourneyGamesInit() {
+  $("#gameListingGrid").jqGrid({
+    autowidth: true,
+    caption: '',
+   	colModel:[
+      {name: 'id', formatter: 'showlink', formatoptions: { baseLinkUrl: 'game' }, width: 20},
+   		{name: 'round', width: 20},
+   		{name: 'playerData', sortable: false, formatter: gamePlayerFormatter},
+   		{name: 'status', hidden: true},
+   		{name: 'statusName', index: 'status', formatter: gameStatusFormatter, width: 20},
+   	],
+   	colNames: ['ID', 'rundă', 'participanți', 'ascuns', 'stare'],
+	  datatype: "json",
+    height: 'auto',
+   	pager: '#pager',
+   	rowList: [10, 20, 50, 100],
+   	rowNum: 20,
+   	sortname: 'round',
+    sortorder: 'desc',
+   	url: wwwRoot + 'ajax/getGridGames?tourneyId=' + $('#tourneyId').val(),
     viewrecords: true,
   });
   $("#gameListingGrid").jqGrid('navGrid', '#pager', {edit: false, add: false, del: false});
@@ -172,5 +272,17 @@ function gamePlayerFormatter(cellValue, options, rowObject) {
 }
 
 function gameStatusFormatter(cellValue, options, rowObject) {
-  return '<div class="gameStatus gameStatus' + rowObject[2] + '">' + cellValue + '</span>';
+  return '<div class="gameStatus gameStatus' + rowObject.status + '">' + cellValue + '</span>';
+}
+
+function tourneyStatusFormatter(cellValue, options, rowObject) {
+  return '<div class="tourneyStatus tourneyStatus' + rowObject.status + '">' + cellValue + '</span>';
+}
+
+function zeroFormatter(cellValue, options, rowObject) {
+  return (cellValue == '0') ? '' : cellValue;
+}
+
+function tourneyFormatter(cellValue, options, rowObject) {
+  return (cellValue == '0') ? '' : ('<a href="tourney?id=' + cellValue + '">' + cellValue + '</a>');
 }

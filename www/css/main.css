@@ -330,3 +330,21 @@ div.errorType {
   font-size: 120%;
   margin-top: 5px;
 }
+
+/** Tourney pages **/
+.tourneyStatus {
+  height: 20px;
+  padding-left: 20px;
+}
+
+.tourneyStatus0 {
+  background: url("../img/silk/hourglass.png") no-repeat;
+}
+
+.tourneyStatus1 {
+  background: url("../img/silk/cog.png") no-repeat;
+}
+
+.tourneyStatus2 {
+  background: url("../img/silk/tick.png") no-repeat;
+}

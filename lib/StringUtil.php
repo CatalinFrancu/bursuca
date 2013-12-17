@@ -40,6 +40,11 @@ class StringUtil {
     }
     return $s;
   }
+
+  /** Like the standard explode(), but filters out zero-length components **/
+  static function explode($delimiter, $s) {
+    return array_values(array_filter(explode($delimiter, $s), 'strlen'));
+  }
 }
 
 ?>

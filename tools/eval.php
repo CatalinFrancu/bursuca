@@ -128,6 +128,7 @@ foreach ($engines as $e) {
 
 // Save the game
 $game->status = Game::STATUS_FINISHED;
+$game->winnerId = $winner->agent->id;
 $game->save();
 
 // Save the moves

@@ -28,7 +28,7 @@
     <input type="text" name="newGamePlayers[]" value=""><br>
     <input type="text" name="newGamePlayers[]" value=""><br>
     <input type="text" name="newGamePlayers[]" value=""><br>
-    <input type="text" name="newGamePlayers[]" value=""><br/>
+    <input type="text" name="newGamePlayers[]" value=""><br>
     <button type="submit">creează partida</button>
   </form>
 </div>

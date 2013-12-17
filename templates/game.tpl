@@ -1,5 +1,10 @@
 <h3>Partida #{$game->id}</h3>
 
+creată pe {$game->created|date_format:'d.m.Y H:i'}<br>
+{if $game->tourneyId}
+  jucată în <a href="tourney?id={$game->tourneyId}">turneul #{$game->tourneyId}</a>, runda {$game->round}<br>
+{/if}
+
 <h4>Clasamentul final</h4>
 
 <table class="mule">

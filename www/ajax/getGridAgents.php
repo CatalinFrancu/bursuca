@@ -31,7 +31,10 @@ $resp->rows = array();
 foreach ($results as $r) {
   $agentName = sprintf("v%d (%s)", $r['version'], $r['name']);
   $resp->rows[] = array('id' => $r['id'],
-                        'cell' => array($r['userId'], $r['id'], $r['username'], $agentName, $r['elo']));
+                        'userId' => $r['userId'],
+                        'username' => $r['username'],
+                        'agentName' => $agentName,
+                        'elo' => $r['elo']);
 }
 print json_encode($resp);
 

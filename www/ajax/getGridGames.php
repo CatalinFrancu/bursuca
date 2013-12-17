@@ -1,6 +1,7 @@
 <?php
 require_once '../../lib/Util.php';
 
+$tourneyId = Util::getRequestParameter('tourneyId');
 $userId = Util::getRequestParameter('userId');
 $agentId = Util::getRequestParameter('agentId');
 $all = Util::getRequestParameter('all');
@@ -9,9 +10,9 @@ $page = Util::getRequestParameter('page');
 $sidx = Util::getRequestParameter('sidx');
 $sord = Util::getRequestParameter('sord');
 
-$query = makeQuery($userId, $agentId, $all, $sord, $sidx);
+$query = makeQuery($tourneyId, $userId, $agentId, $all, $sord, $sidx);
 $count = count($query->find_result_set());
-$query = makeQuery($userId, $agentId, $all, $sord, $sidx); // needs to be rebuilt
+$query = makeQuery($tourneyId, $userId, $agentId, $all, $sord, $sidx); // needs to be rebuilt
 $games = $query->offset(($page - 1) * $rowsPerPage)->limit($rowsPerPage)->find_many();
 
 $resp = new stdClass();
@@ -21,20 +22,26 @@ $resp->records = $count;
 $resp->rows = array();
 foreach ($games as $g) {
   $resp->rows[] = array('id' => $g->id,
-                        'cell' => array($g->id, getPlayerData($g->id), $g->status, $g->getStatusName()));
+                        'tourneyId' => $g->tourneyId,
+                        'round' => $g->round,
+                        'playerData' => getPlayerData($g->id),
+                        'status' => $g->status,
+                        'statusName' => $g->getStatusName());
 }
 print json_encode($resp);
 
 /*************************************************************************/
 
 // Load the games to show.
-// - When the $all, $agentId or $userId parameters are set, obey those
+// - When the $tourneyId, $all, $agentId or $userId parameters are set, obey those
 // - Otherwise, if a user is logged in, show that user's games
 // - Otherwise, no user is logged in and we show all games
-function makeQuery($userId, $agentId, $all, $sord, $sidx) {
+function makeQuery($tourneyId, $userId, $agentId, $all, $sord, $sidx) {
   $user = Session::getUser();
   if ($all) {
     $query = Model::factory('Game');
+  } else if ($tourneyId) {
+    $query = Model::factory('Game')->where('tourneyId', $tourneyId);
   } else if ($agentId) {
     $query = Model::factory('Game')->distinct()->select('game.*')
       ->join('player', array('player.gameId', '=', 'game.id'))
@@ -53,6 +60,7 @@ function makeQuery($userId, $agentId, $all, $sord, $sidx) {
   } else {
     $query = $query->order_by_desc($sidx);
   }
+  $query = $query->order_by_desc('game.id');
   return $query;
 }
 

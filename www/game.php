@@ -54,7 +54,7 @@ SmartyWrap::assign('game', $game);
 SmartyWrap::assign('playerRecords', $playerRecords);
 SmartyWrap::assign('moves', $moves);
 SmartyWrap::assign('ranks', $ranks);
-SmartyWrap::assign('pageTitle', 'partide');
+SmartyWrap::assign('pageTitle', "partida {$game->id}");
 SmartyWrap::addJs('replay');
 SmartyWrap::display('game.tpl');
 

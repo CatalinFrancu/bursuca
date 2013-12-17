@@ -41,7 +41,7 @@ class SmartyWrap {
         case 'jqgrid':             self::$cssFiles[2] = 'ui.jqgrid.css'; break;
         case 'rainbow':            self::$cssFiles[3] = 'rainbow/solarized-light.css'; break;
         case 'select2':            self::$cssFiles[4] = 'select2/select2.css'; break;
-        case 'main':               self::$cssFiles[5] = 'main.css?v=4'; break;
+        case 'main':               self::$cssFiles[5] = 'main.css?v=5'; break;
         default:
           FlashMessage::add("Cannot load CSS file {$id}");
           Util::redirect(Util::$wwwRoot);
@@ -68,7 +68,7 @@ class SmartyWrap {
           self::$jsFiles[7] = 'select2_locale_ro.js';
           break;
         case 'main':
-          self::$jsFiles[8] = 'main.js?v=3'; break;
+          self::$jsFiles[8] = 'main.js?v=4'; break;
         case 'replay':
           self::$jsFiles[9] = 'replay.js?v=1'; break;
         default:

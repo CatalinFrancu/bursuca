@@ -1,16 +1,16 @@
 <?php 
 
 require_once '../lib/Util.php';
-Util::requireLoggedIn();
 
 $userId = Util::getRequestParameter('userId');
 $agentId = Util::getRequestParameter('agentId');
 $all = Util::getRequestParameter('all');
 $newGamePlayers = Util::getRequestParameter('newGamePlayers');
 
-$user = Session::getUser();
-
 if ($newGamePlayers) {
+  Util::requireLoggedIn();
+  $user = Session::getUser();
+
   try {
     $newGamePlayers = array_filter($newGamePlayers);
     if ((count($newGamePlayers) < Game::MIN_PLAYERS) || (count($newGamePlayers) > Game::MAX_PLAYERS)) {
