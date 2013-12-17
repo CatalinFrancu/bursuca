@@ -16,166 +16,173 @@ define('MOVE_CANNOT_BUY', 3);    // not enough cash to buy stock
 define('MOVE_CANNOT_SELL', 4) ;  // not enough stock to sell
 define('MOVE_CANNOT_LOWER', 5) ; // cannot lower price below 1
 
-// Find the oldest pending game
-$game = Model::factory('Game')->where('status', Game::STATUS_NEW)->order_by_asc('created')->find_one();
-if (!$game) {
-  exit;
-}
-$stockPrices = array(1 => $game->price1,
-                     2 => $game->price2,
-                     3 => $game->price3,
-                     4 => $game->price4,
-                     5 => $game->price5,
-                     6 => $game->price6);
-
-// Load data about the players
-$players = array_values(Model::factory('Player')->where('gameId', $game->id)->order_by_asc('position')->find_many());
-$engines = array();
-foreach ($players as $i => $p) {
-  $engines[] = new Engine($p);
-}
-
-// send the initial data to each engine
-foreach ($engines as $i => $e) {
-  $data = array(count($players), $e->player->position);
-  foreach ($engines as $j => $other) {
-    if ($j != $i) {
-      $data[] = $other->agent->userId;
-      $data[] = $other->agent->version;
-    }
-  }
-  $e->jp->writeLine(implode(' ', $data));
-  $e->jp->writeLine(implode(' ', $stockPrices));
-}
-
-// main game loop
-$moves = array();
-$numActivePrograms = count($players);
-$turn = 0;
-$curPlayer = count($players) - 1;
-do {
-  if (++$curPlayer == count($players)) {
-    $turn++;
-    $curPlayer = 0;
-    print "*********************** TURN {$turn} ******************************\n";
-  }
-  $e = $engines[$curPlayer];
-
-  // send dice values to the current player
-  $d1 = rand(1, MAX_DIE);
-  $d2 = rand(1, MAX_DIE);
-  $e->jp->writeLine("$d1 $d2");
-
-  // read the current player's move
-  if ($e->jp->alive) {
-    list($resp, $elapsed) = $e->jp->readLine(MOVE_TIME_MILLIS);
-    if (!$e->jp->alive || ($e->validMove($resp, $d1, $d2, $stockPrices) != MOVE_VALID)) {
-      $resp = PASS_MOVE;
-      $e->jp->kill(Player::REASON_BAD_MOVE);
-      $e->player->rank = $numActivePrograms--;
-    }
+while (true) {
+  // Find the oldest pending game
+  $game = Model::factory('Game')->where('status', Game::STATUS_NEW)->order_by_asc('id')->find_one();
+  if ($game) {
+    evalGame($game);
   } else {
-    $resp = PASS_MOVE;
+    sleep(5);
+  }
+}
+
+function evalGame($game) {
+  $stockPrices = array(1 => $game->price1,
+                       2 => $game->price2,
+                       3 => $game->price3,
+                       4 => $game->price4,
+                       5 => $game->price5,
+                       6 => $game->price6);
+
+  // Load data about the players
+  $players = array_values(Model::factory('Player')->where('gameId', $game->id)->order_by_asc('position')->find_many());
+  $engines = array();
+  foreach ($players as $i => $p) {
+    $engines[] = new Engine($p);
   }
 
-  // create a move
-  $m = Model::factory('Move')->create();
-  $m->gameId = $game->id;
-  $m->number = count($moves) + 1;
-  $m->time = $elapsed;
-  list($m->action, $m->arg, $m->company) = explode(' ', $resp);
-  $moves[] = $m;
-
-  // relay the current player's move to other players
-  foreach ($engines as $j => $other) {
-    if ($j != $curPlayer) {
-      $other->jp->writeLine($resp);
+  // send the initial data to each engine
+  foreach ($engines as $i => $e) {
+    $data = array(count($players), $e->player->position);
+    foreach ($engines as $j => $other) {
+      if ($j != $i) {
+        $data[] = $other->agent->userId;
+        $data[] = $other->agent->version;
+      }
     }
+    $e->jp->writeLine(implode(' ', $data));
+    $e->jp->writeLine(implode(' ', $stockPrices));
   }
 
-  // make the move
-  $e->makeMove($resp, $stockPrices);
+  // main game loop
+  $moves = array();
+  $numActivePrograms = count($players);
+  $turn = 0;
+  $curPlayer = count($players) - 1;
+  do {
+    if (++$curPlayer == count($players)) {
+      $turn++;
+      $curPlayer = 0;
+      print "*********************** TURN {$turn} ******************************\n";
+    }
+    $e = $engines[$curPlayer];
 
-  printGameState($engines, $stockPrices);
-} while (($e->cash < WIN_CASH) && ($numActivePrograms > 1));
+    // send dice values to the current player
+    $d1 = rand(1, MAX_DIE);
+    $d2 = rand(1, MAX_DIE);
+    $e->jp->writeLine("$d1 $d2");
 
-// The winner is not necessarily the player to have made the last move (that might
-// have been a timeout or a bad move). The winner can also be the last player alive.
-$winner = $e;
-if (!$winner->jp->alive) {
-  foreach ($engines as $e) {
+    // read the current player's move
     if ($e->jp->alive) {
-      $winner = $e;
+      list($resp, $elapsed) = $e->jp->readLine(MOVE_TIME_MILLIS);
+      if (!$e->jp->alive || ($e->validMove($resp, $d1, $d2, $stockPrices) != MOVE_VALID)) {
+        $resp = PASS_MOVE;
+        $e->jp->kill(Player::REASON_BAD_MOVE);
+        $e->player->rank = $numActivePrograms--;
+      }
+    } else {
+      $resp = PASS_MOVE;
+    }
+
+    // create a move
+    $m = Model::factory('Move')->create();
+    $m->gameId = $game->id;
+    $m->number = count($moves) + 1;
+    $m->time = $elapsed;
+    list($m->action, $m->arg, $m->company) = explode(' ', $resp);
+    $moves[] = $m;
+
+    // relay the current player's move to other players
+    foreach ($engines as $j => $other) {
+      if ($j != $curPlayer) {
+        $other->jp->writeLine($resp);
+      }
+    }
+
+    // make the move
+    $e->makeMove($resp, $stockPrices);
+
+    printGameState($engines, $stockPrices);
+  } while (($e->cash < WIN_CASH) && ($numActivePrograms > 1));
+
+  // The winner is not necessarily the player to have made the last move (that might
+  // have been a timeout or a bad move). The winner can also be the last player alive.
+  $winner = $e;
+  if (!$winner->jp->alive) {
+    foreach ($engines as $e) {
+      if ($e->jp->alive) {
+        $winner = $e;
+      }
     }
   }
-}
 
-// Process cleanup
-foreach ($engines as $e) {
-  $e->jp->kill(Player::REASON_GAME_OVER);
-  $e->player->exitCode = $e->jp->exitCode;
-  $e->player->killReason = $e->jp->killReason;
-}
-
-// Sort the engines by rank and cash and assign ranks to those that lived to the end of the game
-usort($engines, 'cmp');
-$rank = 1;
-foreach ($engines as $e) {
-  if (!$e->player->rank) {
-    $e->player->rank = $rank++;
+  // Process cleanup
+  foreach ($engines as $e) {
+    $e->jp->kill(Player::REASON_GAME_OVER);
+    $e->player->exitCode = $e->jp->exitCode;
+    $e->player->killReason = $e->jp->killReason;
   }
-}
 
-// Save the game
-$game->status = Game::STATUS_FINISHED;
-$game->winnerId = $winner->agent->id;
-$game->save();
-
-// Save the moves
-foreach ($moves as $m) {
-  $m->save();
-}
-
-// Update ELO ratings. This is a bit iffy because we can have the same engine playing twice.
-// First, create a map of agentId -> change in points
-$eloMap = array();
-foreach ($engines as $e) {
-  $eloMap[$e->agent->id] = 0;
-}
-
-foreach ($engines as $e) {
-  if (($e->agent->id != $winner->agent->id) && $winner->agent->rated && $e->agent->rated) {
-    $change = Elo::ratingChange($winner->agent->elo, $e->agent->elo);
-    $eloMap[$winner->agent->id] += $change;
-    $eloMap[$e->agent->id] -= $change;
+  // Sort the engines by rank and cash and assign ranks to those that lived to the end of the game
+  usort($engines, 'cmp');
+  $rank = 1;
+  foreach ($engines as $e) {
+    if (!$e->player->rank) {
+      $e->player->rank = $rank++;
+    }
   }
-}
 
-// Now actually update the ratings. Note that the same agent may appear several times in the game.
-// We will save each agent, but that is ok as long as they all have the same ELO.
-foreach ($engines as $e) {
-  $e->player->eloStart = $e->agent->elo;
-  $e->agent->elo += $eloMap[$e->agent->id];
-  $e->player->eloEnd = $e->agent->elo;
-}
+  // Save the game
+  $game->status = Game::STATUS_FINISHED;
+  $game->winnerId = $winner->agent->id;
+  $game->save();
 
-// Save the players and agents
-foreach ($engines as $e) {
-  $e->player->save();
-  $e->agent->save();
-}
+  // Save the moves
+  foreach ($moves as $m) {
+    $m->save();
+  }
 
-// Copy persistent data files
-foreach ($engines as $e) {
-  $e->jp->saveDataFile($e->agent->getFullDataName());
-}
+  // Update ELO ratings. This is a bit iffy because we can have the same engine playing twice.
+  // First, create a map of agentId -> change in points
+  $eloMap = array();
+  foreach ($engines as $e) {
+    $eloMap[$e->agent->id] = 0;
+  }
 
-print "\nFinal rankings:\n";
-foreach ($engines as $e) {
-  printf("%d. %s v%d (%s) exit code %d kill reason [%s] rating: %d %+d = %d\n",
-         $e->player->rank, $e->user->username, $e->agent->version, $e->agent->name,
-         $e->player->exitCode, $e->player->getKillReason(),
-         $e->player->eloStart, $e->player->eloEnd - $e->player->eloStart, $e->player->eloEnd);
+  foreach ($engines as $e) {
+    if (($e->agent->id != $winner->agent->id) && $winner->agent->rated && $e->agent->rated) {
+      $change = Elo::ratingChange($winner->agent->elo, $e->agent->elo);
+      $eloMap[$winner->agent->id] += $change;
+      $eloMap[$e->agent->id] -= $change;
+    }
+  }
+
+  // Now actually update the ratings. Note that the same agent may appear several times in the game.
+  // We will save each agent, but that is ok as long as they all have the same ELO.
+  foreach ($engines as $e) {
+    $e->player->eloStart = $e->agent->elo;
+    $e->agent->elo += $eloMap[$e->agent->id];
+    $e->player->eloEnd = $e->agent->elo;
+  }
+
+  // Save the players and agents
+  foreach ($engines as $e) {
+    $e->player->save();
+    $e->agent->save();
+  }
+
+  // Copy persistent data files
+  foreach ($engines as $e) {
+    $e->jp->saveDataFile($e->agent->getFullDataName());
+  }
+
+  print "\nFinal rankings:\n";
+  foreach ($engines as $e) {
+    printf("%d. %s v%d (%s) exit code %d kill reason [%s] rating: %d %+d = %d\n",
+           $e->player->rank, $e->user->username, $e->agent->version, $e->agent->name,
+           $e->player->exitCode, $e->player->getKillReason(),
+           $e->player->eloStart, $e->player->eloEnd - $e->player->eloStart, $e->player->eloEnd);
+  }
 }
 
 /**************************************************************************/
