@@ -39,6 +39,10 @@ if ($newGamePlayers) {
       $player->save();
     }
 
+    // Now make the game available for judging
+    $game->status = Game::STATUS_NEW;
+    $game->save();
+
     FlashMessage::add('Partida a fost creată. Ea va fi evaluată în curând.', 'info');
     Util::redirect('games');
   } catch (Exception $e) {

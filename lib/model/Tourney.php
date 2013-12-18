@@ -11,18 +11,25 @@ class Tourney extends BaseObject {
   function scheduleRound($r) {
     $participants = Participant::get_all_by_tourneyId($this->id);
     shuffle($participants);
+    $games = array();
     foreach ($participants as $i => $part) {
       if ($i % $this->gameSize == 0) {
         $g = Game::create();
         $g->tourneyId = $this->id;
         $g->round = $r;
         $g->save();
+        $games[] = $g;
       }
       $p = Model::factory('Player')->create();
       $p->gameId = $g->id;
       $p->agentId = $part->agentId;
       $p->position = 1 + $i % $this->gameSize;
       $p->save();
+    }
+    // Now make the games available for judging
+    foreach ($games as $g) {
+      $g->status = Game::STATUS_NEW;
+      $g->save();
     }
   }
 
