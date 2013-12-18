@@ -5,12 +5,10 @@
 <table class="mule">
   <tr>
     <th>versiune</th>
-    <th>ELO</th>
   </tr>
   {foreach from=$agents item=a}
     <tr>
       <td>{include file="bits/agent.tpl"}</td>
-      <td>{$a->elo}</td>
     </tr>
   {/foreach}
 </table>

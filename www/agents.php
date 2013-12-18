@@ -27,12 +27,20 @@ if ($submitButton) {
     $agent->version = 1 + Agent::getMaxVersion($user->id);
     $agent->name = $name;
     $agent->language = ($extension == 'c') ? 'c' : 'c++';
+    $agent->rated = 1;
 
     // These throw exceptions on errors
     $agent->validate();
     $agent->setSourceCode(file_get_contents($rec['tmp_name']));
 
     $agent->save();
+
+    // Make the previous agent version unrated
+    if ($agent->version > 1) {
+      $prev = Agent::get_by_userId_version($user->id, $agent->version - 1);
+      $prev->rated = 0;
+      $prev->save();
+    }
     FlashMessage::add('Am adăugat agentul.', 'info');
     Util::redirect('agents');
   } catch (Exception $e) {

@@ -147,29 +147,29 @@ function evalGame($game) {
   // First, create a map of agentId -> change in points
   $eloMap = array();
   foreach ($engines as $e) {
-    $eloMap[$e->agent->id] = 0;
+    $eloMap[$e->user->id] = 0;
   }
 
   foreach ($engines as $e) {
-    if (($e->agent->id != $winner->agent->id) && $winner->agent->rated && $e->agent->rated) {
-      $change = Elo::ratingChange($winner->agent->elo, $e->agent->elo);
-      $eloMap[$winner->agent->id] += $change;
-      $eloMap[$e->agent->id] -= $change;
+    if (($e->user->id != $winner->user->id) && $winner->agent->rated && $e->agent->rated) {
+      $change = Elo::ratingChange($winner->user->elo, $e->user->elo);
+      $eloMap[$winner->user->id] += $change;
+      $eloMap[$e->user->id] -= $change;
     }
   }
 
   // Now actually update the ratings. Note that the same agent may appear several times in the game.
   // We will save each agent, but that is ok as long as they all have the same ELO.
   foreach ($engines as $e) {
-    $e->player->eloStart = $e->agent->elo;
-    $e->agent->elo += $eloMap[$e->agent->id];
-    $e->player->eloEnd = $e->agent->elo;
+    $e->player->eloStart = $e->user->elo;
+    $e->user->elo += $eloMap[$e->user->id];
+    $e->player->eloEnd = $e->user->elo;
   }
 
-  // Save the players and agents
+  // Save the players and users
   foreach ($engines as $e) {
     $e->player->save();
-    $e->agent->save();
+    $e->user->save();
   }
 
   // Copy persistent data files

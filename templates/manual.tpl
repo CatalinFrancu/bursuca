@@ -174,10 +174,10 @@ păstra. De asemenea, orice alt fișier creat nu va fi salvat între partide.</p
 
 <h4>Coeficientul ELO</h4>
 
-<p>Fiecare agent are un coeficient ELO, similar celui folosit la jocul de șah. Acesta pornește de la 1.600, crește de câte ori agentul câștigă o
-partidă și scade de câte ori agentul pierde o partidă (toate locurile în afară de locul I sunt pierzătoare). Formula exactă de calcul este <a
-href="http://en.wikipedia.org/wiki/Elo_rating_system#Mathematical_details">cea de la Wikipedia</a> cu constantele D = 400 (constanta de disparitate)
-și K = 32.</p>
+<p>Fiecare utilizator are un coeficient ELO, similar celui folosit la jocul de șah. Acesta pornește de la 1.600, crește de câte ori utilizatorul
+câștigă o partidă și scade de câte ori utilizatorul pierde o partidă (toate locurile în afară de locul I sunt pierzătoare). Formula exactă de calcul
+este <a href="http://en.wikipedia.org/wiki/Elo_rating_system#Mathematical_details">cea de la Wikipedia</a> cu constantele D = 400 (constanta de
+disparitate) și K = 32.</p>
 
 <p>Ce înseamnă, tradusă în cuvinte, această formulă? Când doi jucători de coeficient ELO egal joacă o partidă, câștigătorul va primi 16 puncte, iar
 pierzătorul va pierde 16 puncte. Cu cât jucătorul câștigător este mai bine cotat, cu atât transferul de puncte este mai mic, căci surpriza este mai
@@ -190,22 +190,24 @@ de puncte va fi de 29 de puncte.</p>
 <ul>
   <li>Când două copii ale aceluiași agent participă la joc, iar una dintre ele câștigă, între cele două copii nu se face un transfer de puncte.</li>
 
-  <li>Când unul dintre agenți este marcat ca „unrated” (disponibil doar pentru partide neoficiale), el nici nu va câștiga, nici nu va ceda
-  puncte.</li>
+  <li>Când unul dintre agenți este marcat ca „unrated” (disponibil doar pentru partide neoficiale), el nici nu va câștiga, nici nu va ceda puncte. În
+  mod normal, doar ultima versiune de agent a fiecărui utilizator câștigă puncte. Când cineva încarcă un agent nou, cei anteriori devin
+  neoficiali.</li>
+
 </ul>
 
 <h4>Turnee</h4>
 
-<p>Un turneu cu N participanți, cu P agenți în fiecare partidă și cu R runde se desfășoară astfel:</p>
+<p>Un turneu cu <code>N</code> participanți, cu <code>P</code> agenți în fiecare partidă și cu <code>R</code> runde se desfășoară astfel:</p>
 
 <ul>
 
-  <li>Se completează N până la un multiplu de P, fie el N', prin adăugarea de strategii dummy.</li>
-  <li>Participanții sunt grupați câte P, în mod aleator, și se desfășoară prima rundă.</li>
-  <li>Se procedează similar pentru toate cele R runde.</li>
+  <li>N trebuie să fie multiplu de <code>P</code>.</li>
+  <li>Participanții sunt grupați câte <code>P</code>, în mod aleator, și se desfășoară prima rundă.</li>
+  <li>Se procedează similar pentru toate cele <code>R</code> runde.</li>
   <li>Câștigătorul fiecărei partide primește 1 punct.</li>
   <li>Participantul cu cele mai multe puncte este câștigătorul turneului.</li>
 
 </ul>
 
-<p>La turneul final al cercului de informatică vor participa numai ultimele versiuni ale fiecărui agent.</p>
+<p>La turneul final al cercului de informatică vor participa numai ultimele versiuni ale fiecărui utilizator.</p>

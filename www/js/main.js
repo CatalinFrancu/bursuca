@@ -141,13 +141,12 @@ function indexInit() {
     autowidth: true,
     caption: '',
    	colModel:[
-      {name: 'id', hidden: true},
       {name: 'userId', hidden: true},
-   		{name: 'username', index: 'username', formatter: userFormatter},
-   		{name: 'agentName', index: 'agent', sortable: false, formatter: agentFormatter},
-   		{name: 'elo', index: 'elo', align: 'right'},
+   		{name: 'username', formatter: userFormatter},
+   		{name: 'versions', align: 'center'},
+   		{name: 'elo', align: 'center'},
    	],
-   	colNames: ['id', 'userId', 'utilizator', 'agent', 'ELO'],
+   	colNames: ['id', 'utilizator', 'versiuni', 'ELO'],
 	  datatype: "json",
     height: 'auto',
    	pager: '#pager',
@@ -155,7 +154,7 @@ function indexInit() {
    	rowNum: 20,
    	sortname: 'elo',
     sortorder: "desc",
-   	url: wwwRoot + 'ajax/getGridAgents',
+   	url: wwwRoot + 'ajax/getGridUsers',
     viewrecords: true,
   });
   $("#grid").jqGrid('navGrid', '#pager', {edit: false, add: false, del: false});

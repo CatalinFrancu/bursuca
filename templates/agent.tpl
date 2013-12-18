@@ -2,8 +2,10 @@
 <div class="pageDetails">
   <ul>
     <li class="right created" title="data creării">{$agent->created|date_format:'%e %B %Y %H:%M'}</li>
-    <li class="creator" title="creator">{include file="bits/user.tpl" u=$owner}</li>
-    <li>ELO: <b>{$agent->elo}</b></li>
+    <li class="creator" title="creator">
+      {include file="bits/user.tpl" u=$owner}
+      (ELO {$owner->elo})
+    </li>
     {if !$agent->rated}
       <li class="unrated">nu participă la rating</li>
     {/if}

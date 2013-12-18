@@ -16,8 +16,8 @@
   <tr>
     <th>loc</th>
     <th>utilizator</th>
-    <th>agent</th>
     <th>ELO</th>
+    <th>agent</th>
     <th>jocuri</th>
     <th>puncte</th>
   </tr>
@@ -25,8 +25,8 @@
     <tr>
       <td>{$i+1}</td>
       <td>{include file="bits/user.tpl" u=$rec.user}</td>
+      <td>{$rec.user->elo}</td>
       <td>{include file="bits/agent.tpl" a=$rec.agent}</td>
-      <td>{$rec.agent->elo}</td>
       <td>{$rec.played}</td>
       <td>{$rec.score}</td>
     </tr>
@@ -35,7 +35,7 @@
 
 <form method="post">
   <input type="hidden" id="tourneyId" name="id" value="{$tourney->id}">
-  {if ($user->id == $tourney->userId) && ($maxScheduledRound < $tourney->numRounds)}
+  {if $user && ($user->id == $tourney->userId) && ($maxScheduledRound < $tourney->numRounds)}
     <input type="submit" name="scheduleNextRound" value="creează runda {$maxScheduledRound+1} / {$tourney->numRounds}">
     <input type="submit" name="scheduleAllRounds" value="creează toate rundele rămase">
   {/if}

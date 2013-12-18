@@ -68,7 +68,7 @@ class SmartyWrap {
           self::$jsFiles[7] = 'select2_locale_ro.js';
           break;
         case 'main':
-          self::$jsFiles[8] = 'main.js?v=5'; break;
+          self::$jsFiles[8] = 'main.js?v=6'; break;
         case 'replay':
           self::$jsFiles[9] = 'replay.js?v=1'; break;
         default:

@@ -4,7 +4,7 @@
 
 <p>Puteți citi <a href="manual">documentația</a>.</p>
 
-<h3>Cei mai buni agenți</h3>
+<h3>Cei mai buni utilizatori</h3>
 
 <table id="grid"></table>
 <div id="pager"></div>
