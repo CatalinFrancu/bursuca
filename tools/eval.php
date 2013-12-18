@@ -164,6 +164,7 @@ function evalGame($game) {
     $e->player->eloStart = $e->user->elo;
     $e->user->elo += $eloMap[$e->user->id];
     $e->player->eloEnd = $e->user->elo;
+    $e->player->rated = $e->agent->rated;
   }
 
   // Save the players and users

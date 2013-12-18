@@ -30,7 +30,7 @@
       <td>{include file="bits/user.tpl" u=$rec.user}</td>
       <td>{include file="bits/agent.tpl" a=$rec.agent}</td>
       <td>
-        {if $rec.agent->rated}
+        {if $rec.player->rated}
           {if $game->status == Game::STATUS_FINISHED}
             {$rec.player->eloStart}
             {if $rec.player->eloStart < $rec.player->eloEnd}
