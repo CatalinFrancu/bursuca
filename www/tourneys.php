@@ -23,6 +23,16 @@ if ($submitButton) {
     if (count($agentIds) % $gameSize) {
       throw new Exception('Numărul de participanți trebuie să se dividă cu mărimea unei mese.');
     }
+    $mine = false;
+    foreach ($agentIds as $agentId) {
+      $agent = Agent::get_by_id($agentId);
+      if ($agent->userId == $user->id) {
+        $mine = true;
+      }
+    }
+    if (!$mine) {
+      throw new Exception('Cel puțin unul dintre agenți trebuie să îți aparțină.');
+    }
 
     // We're good to go! Create objects.
     $t = Model::factory('Tourney')->create();
