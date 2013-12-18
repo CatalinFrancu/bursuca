@@ -82,6 +82,7 @@ function evalGame($game) {
       }
     } else {
       $resp = PASS_MOVE;
+      $elapsed = 0;
     }
 
     // create a move
