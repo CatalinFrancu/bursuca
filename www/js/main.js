@@ -188,10 +188,11 @@ function gamesPageInit() {
    		{name: 'tourneyId', align: 'center', formatter: tourneyFormatter, width: 20},
    		{name: 'round', align: 'center', formatter: zeroFormatter, width: 20},
    		{name: 'playerData', sortable: false, formatter: gamePlayerFormatter},
+   		{name: 'winnerData', sortable: false, formatter: winnerPlayerFormatter, width: 50},
    		{name: 'status', hidden: true},
    		{name: 'statusName', index: 'status', formatter: gameStatusFormatter, width: 20},
    	],
-   	colNames: ['ID', 'turneu', 'rundă', 'participanți', 'ascuns', 'stare'],
+   	colNames: ['ID', 'turneu', 'rundă', 'participanți', 'câștigător', 'ascuns', 'stare'],
 	  datatype: "json",
     height: 'auto',
     onSelectRow: gridGameClick,
@@ -243,10 +244,11 @@ function tourneyGamesInit() {
       {name: 'id', formatter: 'showlink', formatoptions: { baseLinkUrl: 'game' }, width: 20},
    		{name: 'round', width: 20},
    		{name: 'playerData', sortable: false, formatter: gamePlayerFormatter},
+   		{name: 'winnerData', sortable: false, formatter: winnerPlayerFormatter, width: 50},
    		{name: 'status', hidden: true},
    		{name: 'statusName', index: 'status', formatter: gameStatusFormatter, width: 20},
    	],
-   	colNames: ['ID', 'rundă', 'participanți', 'ascuns', 'stare'],
+   	colNames: ['ID', 'rundă', 'participanți', 'câștigător', 'ascuns', 'stare'],
 	  datatype: "json",
     height: 'auto',
     onSelectRow: gridGameClick,
@@ -278,6 +280,12 @@ function gamePlayerFormatter(cellValue, options, rowObject) {
     s += '<a href="user?id=' + cellValue[i].userId + '">' + cellValue[i].username + '</a> ';
     s += '<a href="agent?id=' + cellValue[i].agentId + '">v' + cellValue[i].version + '</a>';
   }
+  return s;
+}
+
+function winnerPlayerFormatter(cellValue, options, rowObject) {
+  var s = '<a href="user?id=' + cellValue.userId + '">' + cellValue.username + '</a> ';
+  s += '<a href="agent?id=' + cellValue.agentId + '">v' + cellValue.version + '</a>';
   return s;
 }
 

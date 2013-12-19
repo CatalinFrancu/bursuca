@@ -24,6 +24,7 @@ foreach ($games as $g) {
   $resp->rows[] = array('id' => $g->id,
                         'tourneyId' => $g->tourneyId,
                         'round' => $g->round,
+                        'winnerData' => getWinnerData($g->winnerId),
                         'playerData' => getPlayerData($g->id),
                         'status' => $g->status,
                         'statusName' => $g->getStatusName());
@@ -76,6 +77,15 @@ function getPlayerData($gameId) {
                        'version' => $a->version);
   }
   return $results;
+}
+
+function getWinnerData($agentId) {
+  $a = Agent::get_by_id($agentId);
+  $u = User::get_by_id($a->userId);
+  return array('userId' => $u->id,
+               'username' => $u->username,
+               'agentId' => $a->id,
+               'version' => $a->version);
 }
 
 ?>
