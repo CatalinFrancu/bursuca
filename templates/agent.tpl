@@ -16,6 +16,6 @@
   <h3>Cod-sursă</h3>
 
   {strip}
-    <pre data-language="C">{$sourceCode}</pre>
+    <pre data-language="C">{$sourceCode|escape}</pre>
   {/strip}
 {/if}

@@ -27,6 +27,7 @@ while (true) {
 }
 
 function evalGame($game) {
+  print "*********************** Evaluating game {$game->id} ******************************\n";
   $stockPrices = array(1 => $game->price1,
                        2 => $game->price2,
                        3 => $game->price3,

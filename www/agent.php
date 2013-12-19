@@ -12,7 +12,7 @@ if (!$agent) {
 
 $owner = User::get_by_id($agent->userId);
 $user = Session::getUser();
-$showSourceCode = $user && ($user->id == $owner->id);
+$showSourceCode = $user && (($user->id == $owner->id) || ($user->admin));
 
 SmartyWrap::assign('agent', $agent);
 SmartyWrap::assign('owner', $owner);
@@ -21,8 +21,6 @@ if ($showSourceCode) {
   SmartyWrap::assign('sourceCode', $agent->getSourceCode());
 }
 SmartyWrap::assign('pageTitle', "Agent: {$owner->username} v{$agent->version}");
-SmartyWrap::addCss('rainbow');
-SmartyWrap::addJs('rainbow');
 SmartyWrap::display('agent.tpl');
 
 ?>
