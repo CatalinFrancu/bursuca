@@ -92,6 +92,11 @@ function evalGame($game) {
     $m->number = count($moves) + 1;
     $m->time = $elapsed;
     list($m->action, $m->arg, $m->company) = explode(' ', $resp);
+    // TODO -- this is hacky. Store the dice for a pass move
+    if ($m->action == 'P') {
+      $m->arg = $d1;
+      $m->company = $d2;
+    }
     $moves[] = $m;
 
     // relay the current player's move to other players
