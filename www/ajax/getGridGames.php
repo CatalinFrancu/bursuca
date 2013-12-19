@@ -80,6 +80,9 @@ function getPlayerData($gameId) {
 }
 
 function getWinnerData($agentId) {
+  if (!$agentId) {
+    return array();
+  }
   $a = Agent::get_by_id($agentId);
   $u = User::get_by_id($a->userId);
   return array('userId' => $u->id,

@@ -284,6 +284,9 @@ function gamePlayerFormatter(cellValue, options, rowObject) {
 }
 
 function winnerPlayerFormatter(cellValue, options, rowObject) {
+  if (cellValue.length == 0) { // TODO: proper condition
+    return '';
+  }
   var s = '<a href="user?id=' + cellValue.userId + '">' + cellValue.username + '</a> ';
   s += '<a href="agent?id=' + cellValue.agentId + '">v' + cellValue.version + '</a>';
   return s;
