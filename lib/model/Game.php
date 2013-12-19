@@ -13,6 +13,7 @@ class Game extends BaseObject {
 
   const MIN_INITIAL_PRICE = 2;
   const MAX_INITIAL_PRICE = 6;
+  const MAX_STOCK_PRICE = 1000;
 
   // Idiorm doesn't allow constructors
   static function create() {

@@ -222,7 +222,7 @@ class Engine {
       case 'B': return ($arg * $stockPrices[$company] <= $this->cash) ? MOVE_VALID : MOVE_CANNOT_BUY;
       case 'S': return ($this->stock[$company] >= $arg) ? MOVE_VALID : MOVE_CANNOT_SELL;
       case 'L': return ($stockPrices[$company] > $arg) ? MOVE_VALID : MOVE_CANNOT_LOWER;
-      case 'R': return MOVE_VALID;
+      case 'R': return ($stockPrices[$company] + $arg <= Game::MAX_STOCK_PRICE) ? MOVE_VALID : MOVE_CANNOT_LOWER; // TODO: MOVE_CANNOT_RAISE
     }
   }
 
